@@ -80,6 +80,11 @@ namespace infogr_raytracer
             GL.Uniform1(GL.GetUniformLocation(Handle, name), value);
         }
         
+        public int GetAttribLocation(string attribName)
+        {
+            return GL.GetAttribLocation(Handle, attribName);
+        }
+        
         
         // Make our shader disposable
         private bool _disposedValue = false;

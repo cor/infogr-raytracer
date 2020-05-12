@@ -9,19 +9,28 @@ namespace infogr_raytracer
     {
         private Surface _screen;
         
-        // OpenGL stuff for triangle
         private float[] _vertices =
         {
-            -0.5f, -0.5f, 0.0f, // Bottom-left vertex
-             0.5f, -0.5f, 0.0f, // Bottom-right vertex
-             0.0f,  0.5f, 0.0f  // Top vertex
+            // Position         Texture coordinates
+             0.5f,  0.5f, 0.0f, 1.0f, 1.0f, // top right
+             0.5f, -0.5f, 0.0f, 1.0f, 0.0f, // bottom right
+            -0.5f, -0.5f, 0.0f, 0.0f, 0.0f, // bottom left
+            -0.5f,  0.5f, 0.0f, 0.0f, 1.0f  // top left
         };
+        
+        private readonly uint[] _indices =
+        {
+            0, 1, 3,
+            1, 2, 3
+        };
+        
         private int _vertexBufferObject;
         private int _vertexArrayObject;
+        private int _elementBufferObject;
 
         private Shader _shader;
-        
-        
+        private Texture _texture;
+
         /// <summary>
         /// Constructs a new Game with the specified attributes.
         /// </summary>
@@ -55,17 +64,33 @@ namespace infogr_raytracer
             
             GL.ClearColor(0.1f, 0.1f, 0.1f, 1.0f);
             
-            // Initialize triangle object
-            _vertexArrayObject = GL.GenVertexArray();
             _vertexBufferObject = GL.GenBuffer();
-            GL.BindVertexArray(_vertexArrayObject);
             GL.BindBuffer(BufferTarget.ArrayBuffer, _vertexBufferObject);
             GL.BufferData(BufferTarget.ArrayBuffer, _vertices.Length * sizeof(float), _vertices, BufferUsageHint.StaticDraw);
-            GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, 3 * sizeof(float), 0);
-            GL.EnableVertexAttribArray(0);
+
+            _elementBufferObject = GL.GenBuffer();
+            GL.BindBuffer(BufferTarget.ElementArrayBuffer, _elementBufferObject);
+            GL.BufferData(BufferTarget.ElementArrayBuffer, _indices.Length * sizeof(uint), _indices, BufferUsageHint.StaticDraw);
             
-            // Initialize our shader
             _shader = new Shader("shaders/shader.vert", "shaders/shader.frag");
+            _shader.Use();
+            
+            _texture = new Texture("assets/container.png");
+            _texture.Use();
+            
+            _vertexArrayObject = GL.GenVertexArray();
+            GL.BindVertexArray(_vertexArrayObject);
+            GL.BindBuffer(BufferTarget.ArrayBuffer, _vertexBufferObject);
+            GL.BindBuffer(BufferTarget.ElementArrayBuffer, _elementBufferObject);
+
+
+            int vertexLocation = _shader.GetAttribLocation("aPosition");
+            GL.EnableVertexAttribArray(vertexLocation);
+            GL.VertexAttribPointer(vertexLocation, 3, VertexAttribPointerType.Float, false, 5 * sizeof(float), 0);
+
+            int texCoordLocation = _shader.GetAttribLocation("aTexCoord");
+            GL.EnableVertexAttribArray(texCoordLocation);
+            GL.VertexAttribPointer(texCoordLocation, 2, VertexAttribPointerType.Float, false, 5 * sizeof(float), 3 * sizeof(float));
             
             base.OnLoad(e);
         }
@@ -77,9 +102,11 @@ namespace infogr_raytracer
         {
             GL.Clear(ClearBufferMask.ColorBufferBit);
             
-            _shader.Use();
             GL.BindVertexArray(_vertexArrayObject);
-            GL.DrawArrays(PrimitiveType.Triangles, 0, 3);
+            _texture.Use();
+            _shader.Use();
+            
+            GL.DrawElements(PrimitiveType.Triangles, _indices.Length, DrawElementsType.UnsignedInt, 0);
             
             Context.SwapBuffers();
             base.OnRenderFrame(e);
@@ -99,9 +126,14 @@ namespace infogr_raytracer
         protected override void OnUnload(EventArgs e)
         {
             GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
+            GL.BindVertexArray(0);
+            GL.UseProgram(0);
+
             GL.DeleteBuffer(_vertexBufferObject);
-            
-            _shader.Dispose();
+            GL.DeleteVertexArray(_vertexArrayObject);
+
+            GL.DeleteProgram(_shader.Handle);
+            GL.DeleteTexture(_texture.Handle);
             
             base.OnUnload(e);
         }

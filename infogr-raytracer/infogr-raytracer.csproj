@@ -48,6 +48,7 @@
         <Compile Include="Properties\AssemblyInfo.cs" />
         <Compile Include="Shader.cs" />
         <Compile Include="Surface.cs" />
+        <Compile Include="Texture.cs" />
     </ItemGroup>
     <ItemGroup>
       <None Include="OpenTK.dll.config" />
@@ -56,6 +57,9 @@
     <ItemGroup>
       <Content Include="assets\font.png" />
       <Content Include="shaders\**">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+      <Content Include="assets\**">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </Content>
       <Content Include="shaders\shader.vert" />
