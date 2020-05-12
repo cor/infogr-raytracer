@@ -16,8 +16,8 @@ namespace infogr_raytracer
              0.5f, -0.5f, 0.0f, // Bottom-right vertex
              0.0f,  0.5f, 0.0f  // Top vertex
         };
-
         private int _vertexBufferObject;
+        private int _vertexArrayObject;
 
         private Shader _shader;
         
@@ -56,9 +56,13 @@ namespace infogr_raytracer
             GL.ClearColor(0.1f, 0.1f, 0.1f, 1.0f);
             
             // Initialize triangle object
+            _vertexArrayObject = GL.GenVertexArray();
             _vertexBufferObject = GL.GenBuffer();
+            GL.BindVertexArray(_vertexArrayObject);
             GL.BindBuffer(BufferTarget.ArrayBuffer, _vertexBufferObject);
             GL.BufferData(BufferTarget.ArrayBuffer, _vertices.Length * sizeof(float), _vertices, BufferUsageHint.StaticDraw);
+            GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, 3 * sizeof(float), 0);
+            GL.EnableVertexAttribArray(0);
             
             // Initialize our shader
             _shader = new Shader("shaders/shader.vert", "shaders/shader.frag");
@@ -73,7 +77,9 @@ namespace infogr_raytracer
         {
             GL.Clear(ClearBufferMask.ColorBufferBit);
             
-            
+            _shader.Use();
+            GL.BindVertexArray(_vertexArrayObject);
+            GL.DrawArrays(PrimitiveType.Triangles, 0, 3);
             
             Context.SwapBuffers();
             base.OnRenderFrame(e);
