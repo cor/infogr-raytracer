@@ -46,6 +46,7 @@
         <Compile Include="Game.cs" />
         <Compile Include="Program.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
+        <Compile Include="Shader.cs" />
         <Compile Include="Surface.cs" />
     </ItemGroup>
     <ItemGroup>
@@ -54,6 +55,10 @@
     </ItemGroup>
     <ItemGroup>
       <Content Include="assets\font.png" />
+      <Content Include="shaders\**">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+      <Content Include="shaders\shader.vert" />
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
     <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

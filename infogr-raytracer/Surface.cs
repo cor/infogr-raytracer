@@ -7,11 +7,17 @@ namespace infogr_raytracer
 {
 	public class Surface
 	{
+		
+		// Member variables that were already in the template
 		public int width, height;
 		public int[] pixels;
 		static bool fontReady = false;
 		static Surface font;
 		static int[] fontRedir;
+		
+		// Modern OpenGL stuff
+		
+		
 
 		/// <summary>
 		/// Constructs a Surface with a specified width and height
