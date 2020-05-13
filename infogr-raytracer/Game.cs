@@ -42,7 +42,6 @@ namespace infogr_raytracer
             GameWindowFlags.Default, DisplayDevice.Default,
             3, 3, GraphicsContextFlags.ForwardCompatible)
         {
-            // _screen = new Surface(width, height);
         }
         
         /// <summary>
@@ -72,23 +71,18 @@ namespace infogr_raytracer
             _elementBufferObject = GL.GenBuffer();
             GL.BindBuffer(BufferTarget.ElementArrayBuffer, _elementBufferObject);
             GL.BufferData(BufferTarget.ElementArrayBuffer, _indices.Length * sizeof(uint), _indices, BufferUsageHint.StaticDraw);
-            
-            _shader = new Shader("shaders/shader.vert", "shaders/shader.frag");
-            _shader.Use();
-            
-            // Create a new Surface to draw on
+
             _screen = new Surface(Width, Height);
             _screenTexId = _screen.GenTexture();
-            
-            // _texture = new Texture("assets/container.png");
-            // _texture.Use();
             
             _vertexArrayObject = GL.GenVertexArray();
             GL.BindVertexArray(_vertexArrayObject);
             GL.BindBuffer(BufferTarget.ArrayBuffer, _vertexBufferObject);
             GL.BindBuffer(BufferTarget.ElementArrayBuffer, _elementBufferObject);
             GL.BindTexture(TextureTarget.Texture2D, _screenTexId);
-
+            
+            _shader = new Shader("shaders/shader.vert", "shaders/shader.frag");
+            _shader.Use();
 
             int vertexLocation = _shader.GetAttribLocation("aPosition");
             GL.EnableVertexAttribArray(vertexLocation);
@@ -112,17 +106,15 @@ namespace infogr_raytracer
             // Draw stuff on the screen
             double size = 200 +  Math.Sin(DateTime.Now.Ticks / 10_000_000.0 * 2 * Math.PI) * 100;
             _screen.Bar(0, 0, (int) size, (int) size, 255 << 8);
+            _screen.Print("hi", 10, 10, 0xFFFFFF);
             
-            // Regenerate the screen's texture
-            // TODO: Avoid doing this and instead update the texture's data.
-            _screenTexId = _screen.GenTexture();
-            
-            
+            // Draw the screen
             GL.BindVertexArray(_vertexArrayObject);
-            _shader.Use();
-            
+            GL.TexSubImage2D(TextureTarget.Texture2D, 0, 0, 0, _screen.width, _screen.height, 
+                PixelFormat.Bgra, PixelType.UnsignedByte, _screen.pixels);
             GL.DrawElements(PrimitiveType.Triangles, _indices.Length, DrawElementsType.UnsignedInt, 0);
             
+            // Show the new frame
             Context.SwapBuffers();
             base.OnRenderFrame(e);
         }

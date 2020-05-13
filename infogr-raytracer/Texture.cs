@@ -13,7 +13,7 @@ namespace infogr_raytracer
         public Texture(string path)
         {
             Handle = GL.GenTexture();
-
+            
             Use();
 
             using (var image = new Bitmap(path))
