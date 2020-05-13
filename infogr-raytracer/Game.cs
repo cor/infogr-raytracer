@@ -8,6 +8,7 @@ namespace infogr_raytracer
     public class Game: GameWindow
     {
         private Surface _screen;
+        private int _screenTexId;
         
         private float[] _vertices =
         {
@@ -75,13 +76,18 @@ namespace infogr_raytracer
             _shader = new Shader("shaders/shader.vert", "shaders/shader.frag");
             _shader.Use();
             
-            _texture = new Texture("assets/container.png");
-            _texture.Use();
+            // Create a new Surface to draw on
+            _screen = new Surface(Width, Height);
+            _screenTexId = _screen.GenTexture();
+            
+            // _texture = new Texture("assets/container.png");
+            // _texture.Use();
             
             _vertexArrayObject = GL.GenVertexArray();
             GL.BindVertexArray(_vertexArrayObject);
             GL.BindBuffer(BufferTarget.ArrayBuffer, _vertexBufferObject);
             GL.BindBuffer(BufferTarget.ElementArrayBuffer, _elementBufferObject);
+            GL.BindTexture(TextureTarget.Texture2D, _screenTexId);
 
 
             int vertexLocation = _shader.GetAttribLocation("aPosition");
@@ -101,9 +107,18 @@ namespace infogr_raytracer
         protected override void OnRenderFrame(FrameEventArgs e)
         {
             GL.Clear(ClearBufferMask.ColorBufferBit);
+            _screen.Clear(255);
+            
+            // Draw stuff on the screen
+            double size = 200 +  Math.Sin(DateTime.Now.Ticks / 10_000_000.0 * 2 * Math.PI) * 100;
+            _screen.Bar(0, 0, (int) size, (int) size, 255 << 8);
+            
+            // Regenerate the screen's texture
+            // TODO: Avoid doing this and instead update the texture's data.
+            _screenTexId = _screen.GenTexture();
+            
             
             GL.BindVertexArray(_vertexArrayObject);
-            _texture.Use();
             _shader.Use();
             
             GL.DrawElements(PrimitiveType.Triangles, _indices.Length, DrawElementsType.UnsignedInt, 0);
@@ -120,6 +135,10 @@ namespace infogr_raytracer
         protected override void OnResize(EventArgs e)
         {
             GL.Viewport(0, 0, Width, Height);
+            
+            // TODO: Find out if this is necessary
+            _screen = new Surface(Width, Height);
+            
             base.OnResize(e);
         }
 
