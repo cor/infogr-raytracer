@@ -41,7 +41,7 @@ namespace infogr_raytracer
             GameWindowFlags.Default, DisplayDevice.Default,
             3, 3, GraphicsContextFlags.ForwardCompatible)
         {
-            _screen = new Surface(width, height);
+            // _screen = new Surface(width, height);
         }
         
         /// <summary>
@@ -130,10 +130,11 @@ namespace infogr_raytracer
             GL.UseProgram(0);
 
             GL.DeleteBuffer(_vertexBufferObject);
+            GL.DeleteBuffer(_elementBufferObject);
             GL.DeleteVertexArray(_vertexArrayObject);
-
-            GL.DeleteProgram(_shader.Handle);
-            GL.DeleteTexture(_texture.Handle);
+            
+            _shader.Dispose();
+            _texture.Dispose();
             
             base.OnUnload(e);
         }

@@ -1,3 +1,4 @@
+using System;
 using System.Drawing;
 using System.Drawing.Imaging;
 using OpenTK.Graphics.OpenGL;
@@ -5,7 +6,7 @@ using PixelFormat = OpenTK.Graphics.OpenGL.PixelFormat;
 
 namespace infogr_raytracer
 {
-    public class Texture
+    public class Texture: IDisposable
     {
         public readonly int Handle;
 
@@ -56,6 +57,31 @@ namespace infogr_raytracer
         {
             GL.ActiveTexture(unit);
             GL.BindTexture(TextureTarget.Texture2D, Handle);
+        }
+        
+        
+        // Make our texture disposable
+        private bool _disposedValue = false;
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!_disposedValue)
+            {
+                GL.DeleteTexture(Handle);
+                _disposedValue = true;
+            }
+        }
+
+        ~Texture()
+        {
+            GL.DeleteProgram(Handle);
+        }
+
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
     }
 }
