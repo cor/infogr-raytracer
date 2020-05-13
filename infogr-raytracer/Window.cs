@@ -8,6 +8,7 @@ namespace infogr_raytracer
     public class Window: GameWindow
     {
         private Surface _screen;
+        private Game _game;
 
         /// <summary>
         /// Constructs a new Window with the specified attributes.
@@ -39,7 +40,8 @@ namespace infogr_raytracer
         {
             PrintVersionInfo();
             
-            _screen = new Surface(Width, Height);
+            _game = new Game { Screen = new Surface(Width, Height) };
+            _game.OnLoad();
 
             base.OnLoad(e);
         }
@@ -51,15 +53,10 @@ namespace infogr_raytracer
         {
             // Clear the screen
             GL.Clear(ClearBufferMask.ColorBufferBit);
-            _screen.Clear(255);
-            
-            // Mutate the screen
-            double size = 200 +  Math.Sin(DateTime.Now.Ticks / 10_000_000.0 * 2 * Math.PI) * 100;
-            _screen.Bar(0, 0, (int) size, (int) size, 255 << 8);
-            _screen.Print("hi", 10, 10, 0xFFFFFF);
 
-            // Draw the screen
-            _screen.Draw();
+            // Let our Game draw stuff to it's Screen
+            _game.OnRenderFrame();
+            _game.Screen.Draw();
             
             // Show the new frame
             Context.SwapBuffers();
@@ -75,8 +72,8 @@ namespace infogr_raytracer
         {
             GL.Viewport(0, 0, Width, Height);
             
-            _screen.Unload();
-            _screen = new Surface(Width, Height);
+            _game.Screen.Unload();
+            _game.Screen = new Surface(Width, Height);
             
             base.OnResize(e);
         }
@@ -88,7 +85,7 @@ namespace infogr_raytracer
         /// <param name="e">Not used.</param>
         protected override void OnUnload(EventArgs e)
         {
-            _screen.Unload();
+            _game.Screen.Unload();
             base.OnUnload(e);
         }
     }
