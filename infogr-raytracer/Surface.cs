@@ -2,6 +2,7 @@ using System;
 using System.Drawing;
 using System.Drawing.Imaging;
 using OpenTK.Graphics.OpenGL;
+using PixelFormat = OpenTK.Graphics.OpenGL.PixelFormat;
 
 namespace infogr_raytracer
 {
@@ -15,8 +16,28 @@ namespace infogr_raytracer
 		static Surface font;
 		static int[] fontRedir;
 		
-		// Modern OpenGL stuff
+		// OpenGL values for rendering the screen's texture 
+		private readonly float[] _vertices =
+		{
+			// Position         Texture coordinates
+			 1.0f,  1.0f, 0.0f, 1.0f, 1.0f, // top right
+			 1.0f, -1.0f, 0.0f, 1.0f, 0.0f, // bottom right
+			-1.0f, -1.0f, 0.0f, 0.0f, 0.0f, // bottom left
+			-1.0f,  1.0f, 0.0f, 0.0f, 1.0f  // top left
+		};
+        
+		private readonly uint[] _indices =
+		{
+			0, 1, 3,
+			1, 2, 3
+		};
+        
+		private int _vertexBufferObject;
+		private int _vertexArrayObject;
+		private int _elementBufferObject;
 		
+		private Shader _shader;
+		private int _textureId;
 		
 
 		/// <summary>
@@ -29,6 +50,43 @@ namespace infogr_raytracer
 			width = w;
 			height = h;
 			pixels = new int[w * h];
+			
+			CreateTexture();
+		}
+
+
+		/// <summary>
+		/// Creates the OpenGL VBO, EBO, VAO, Shader, and Texture needed for rendering the Surface.
+		/// </summary>
+		private void CreateTexture()
+		{
+			            
+			_vertexBufferObject = GL.GenBuffer();
+			GL.BindBuffer(BufferTarget.ArrayBuffer, _vertexBufferObject);
+			GL.BufferData(BufferTarget.ArrayBuffer, _vertices.Length * sizeof(float), _vertices, BufferUsageHint.StaticDraw);
+
+			_elementBufferObject = GL.GenBuffer();
+			GL.BindBuffer(BufferTarget.ElementArrayBuffer, _elementBufferObject);
+			GL.BufferData(BufferTarget.ElementArrayBuffer, _indices.Length * sizeof(uint), _indices, BufferUsageHint.StaticDraw);
+			
+			_vertexArrayObject = GL.GenVertexArray();
+			GL.BindVertexArray(_vertexArrayObject);
+			GL.BindBuffer(BufferTarget.ArrayBuffer, _vertexBufferObject);
+			GL.BindBuffer(BufferTarget.ElementArrayBuffer, _elementBufferObject);
+
+			_textureId = GenTexture();
+			GL.BindTexture(TextureTarget.Texture2D, _textureId);
+            
+			_shader = new Shader("shaders/shader.vert", "shaders/shader.frag");
+			_shader.Use();
+
+			int vertexLocation = _shader.GetAttribLocation("aPosition");
+			GL.EnableVertexAttribArray(vertexLocation);
+			GL.VertexAttribPointer(vertexLocation, 3, VertexAttribPointerType.Float, false, 5 * sizeof(float), 0);
+
+			int texCoordLocation = _shader.GetAttribLocation("aTexCoord");
+			GL.EnableVertexAttribArray(texCoordLocation);
+			GL.VertexAttribPointer(texCoordLocation, 2, VertexAttribPointerType.Float, false, 5 * sizeof(float), 3 * sizeof(float));
 		}
 		
 		/// <summary>
@@ -266,6 +324,31 @@ namespace infogr_raytracer
 					if( (font.pixels[src + u] & 0xffffff) != 0 ) pixels[dest + u] = c;
 				}
 			}
+		}
+
+		public void Draw()
+		{
+			// Draw the screen
+			GL.BindVertexArray(_vertexArrayObject);
+			GL.TexSubImage2D(TextureTarget.Texture2D, 0, 0, 0, width, height, 
+				PixelFormat.Bgra, PixelType.UnsignedByte, pixels);
+			GL.DrawElements(PrimitiveType.Triangles, _indices.Length, DrawElementsType.UnsignedInt, 0);
+		}
+
+		/// <summary>
+		/// Unloads all OpenGL buffers, VAOs, and shader programs.
+		/// </summary>
+		public void Unload()
+		{
+			GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
+			GL.BindVertexArray(0);
+			GL.UseProgram(0);
+
+			GL.DeleteBuffer(_vertexBufferObject);
+			GL.DeleteBuffer(_elementBufferObject);
+			GL.DeleteVertexArray(_vertexArrayObject);
+            
+			_shader.Dispose();
 		}
 	}
 	
