@@ -7,7 +7,6 @@ namespace infogr_raytracer
 {
     public class Window: GameWindow
     {
-        private Surface _screen;
         private Game _game;
 
         /// <summary>
