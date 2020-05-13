@@ -4,9 +4,9 @@
     {
         public static void Main(string[] args)
         {
-            using (Game game = new Game(1200, 900, "INFOGR Raytracer"))
+            using (Window window = new Window(1200, 900, "INFOGR Raytracer"))
             {
-                game.Run(60.0);
+                window.Run(60.0);
             }
         }
     }

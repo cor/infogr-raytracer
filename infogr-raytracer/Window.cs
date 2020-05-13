@@ -5,17 +5,17 @@ using OpenTK.Graphics.OpenGL;
 
 namespace infogr_raytracer
 {
-    public class Game: GameWindow
+    public class Window: GameWindow
     {
         private Surface _screen;
 
         /// <summary>
-        /// Constructs a new Game with the specified attributes.
+        /// Constructs a new Window with the specified attributes.
         /// </summary>
-        /// <param name="width">The width of the Game's window</param>
-        /// <param name="height">The height of the Game's window</param>
-        /// <param name="title">The title of the Game's window</param>
-        public Game(int width, int height, string title) : base(width, height, GraphicsMode.Default, title,
+        /// <param name="width">The width of the Window's window</param>
+        /// <param name="height">The height of the Window's window</param>
+        /// <param name="title">The title of the Window's window</param>
+        public Window(int width, int height, string title) : base(width, height, GraphicsMode.Default, title,
             GameWindowFlags.Default, DisplayDevice.Default,
             3, 3, GraphicsContextFlags.ForwardCompatible)
         {
