@@ -40,14 +40,14 @@ namespace infogr_raytracer
 
         private int ToScreenColor(Vector3 worldColor)
         {
-            return (int) (Math.Min(worldColor.X * 255, 255)) << 16 + 
-                   (int) (Math.Min(worldColor.Y * 255, 255)) << 8 +
+            return ((int) (Math.Min(worldColor.X * 255, 255)) << 16) + 
+                   ((int) (Math.Min(worldColor.Y * 255, 255)) << 8) +
                    (int) (Math.Min(worldColor.Z * 255, 255)); 
         }
 
         private Vector3 Trace(Vector2 point)
         {
-            return new Vector3(1, 1, 1);
+            return new Vector3(1, 0, 1);
         }
 
         private float WorldSpaceX(int screenSpaceX)
