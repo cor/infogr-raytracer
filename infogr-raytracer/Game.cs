@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using OpenTK;
 using OpenTK.Graphics;
 
@@ -8,7 +9,7 @@ namespace infogr_raytracer
     {
         public Surface Screen;
 
-        private Light _light;
+        private List<Light> _lights;
         private Vector2 _worldSpaceSize = new Vector2(10f, 10f);
 
         /// <summary>
@@ -17,7 +18,13 @@ namespace infogr_raytracer
         /// </summary>
         public void OnLoad()
         {
-            _light = new Light() { Color = new Vector3(1, 1, 1), Position = new Vector2(2f, 2f) };
+            _lights = new List<Light>()
+            {
+                new Light() { Color = new Vector3(1, 1, 1), Position = new Vector2(2f, 2f) },
+                new Light() { Color = new Vector3(3, 2, 1), Position = new Vector2(3f, 4f) },
+                new Light() { Color = new Vector3(3, 4, 5), Position = new Vector2(3f, 8f) },
+                new Light() { Color = new Vector3(1, 0, 1), Position = new Vector2(7f, 8f) }
+            };
         }
 
         /// <summary>
@@ -56,11 +63,18 @@ namespace infogr_raytracer
 
         private Vector3 Trace(Vector2 point)
         {
-            Vector2 pointToLight = _light.Position - point;
-            float r = pointToLight.Length;
-            float intensity = 1f / (4f * r * r);
+            Vector3 colorAtPixel = new Vector3(0, 0, 0);
             
-            return new Vector3(1, 0, 1) * intensity;
+            foreach (Light light in _lights)
+            {
+                Vector2 pointToLight = light.Position - point;
+                float r = pointToLight.Length;
+                float intensityForLight = 1f / (4f * r * r);
+
+                colorAtPixel += light.Color * intensityForLight;
+            }
+            
+            return colorAtPixel;
         }
 
         private float WorldSpaceX(int screenSpaceX)
