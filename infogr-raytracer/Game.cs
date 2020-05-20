@@ -23,7 +23,8 @@ namespace infogr_raytracer
                 new Light() { Color = new Vector3(1, 1, 1), Position = new Vector2(2f, 2f) },
                 new Light() { Color = new Vector3(3, 2, 1), Position = new Vector2(3f, 4f) },
                 new Light() { Color = new Vector3(3, 4, 5), Position = new Vector2(3f, 8f) },
-                new Light() { Color = new Vector3(1, 0, 1), Position = new Vector2(7f, 8f) }
+                new Light() { Color = new Vector3(1, 0, 0), Position = new Vector2(7f, 8f) },
+                new Light() { Color = new Vector3(0, 0, 1), Position = new Vector2(7.5f, 8f) }
             };
         }
 
@@ -43,7 +44,7 @@ namespace infogr_raytracer
                     Screen.Plot(x, y, ToScreenColor(colorForPixel));
                 }
             }
-            Screen.Print("hi", 10, 10, 0xFFFFFF);
+            Screen.Print("Look on my Works, ye Mighty, and despair!", 10, 10, 0xFFFFFF);
         }
 
 
@@ -58,23 +59,23 @@ namespace infogr_raytracer
         {
             return ((int) (Math.Min(worldColor.X * 255, 255)) << 16) + 
                    ((int) (Math.Min(worldColor.Y * 255, 255)) << 8) +
-                   (int) (Math.Min(worldColor.Z * 255, 255)); 
+                    (int) (Math.Min(worldColor.Z * 255, 255)); 
         }
 
         private Vector3 Trace(Vector2 point)
         {
-            Vector3 colorAtPixel = new Vector3(0, 0, 0);
+            Vector3 colorAtPoint = new Vector3(0, 0, 0);
             
             foreach (Light light in _lights)
             {
                 Vector2 pointToLight = light.Position - point;
-                float r = pointToLight.Length;
-                float intensityForLight = 1f / (4f * r * r);
+                float distanceToLight = pointToLight.Length;
+                float intensity = 1f / (4f * (float) Math.PI * distanceToLight * distanceToLight);
 
-                colorAtPixel += light.Color * intensityForLight;
+                colorAtPoint += light.Color * intensity;
             }
             
-            return colorAtPixel;
+            return colorAtPoint;
         }
 
         private float WorldSpaceX(int screenSpaceX)
