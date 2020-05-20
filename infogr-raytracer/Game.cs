@@ -1,18 +1,22 @@
 using System;
+using OpenTK;
+using OpenTK.Graphics;
 
 namespace infogr_raytracer
 {
     public class Game
     {
         public Surface Screen;
-        
+
+        private Light _light;
+
         /// <summary>
         /// Called when the Game is loaded.
         /// Should be used for one-time setup.
         /// </summary>
         public void OnLoad()
         {
-            
+            _light = new Light() { Color = new Vector3(1, 1, 1), Position = new Vector2(1, 1) };
         }
 
         /// <summary>
