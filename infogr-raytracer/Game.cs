@@ -17,7 +17,7 @@ namespace infogr_raytracer
         /// </summary>
         public void OnLoad()
         {
-            _light = new Light() { Color = new Vector3(1, 1, 1), Position = new Vector2(9f, 9f) };
+            _light = new Light() { Color = new Vector3(1, 1, 1), Position = new Vector2(2f, 2f) };
         }
 
         /// <summary>
@@ -37,6 +37,14 @@ namespace infogr_raytracer
                 }
             }
             Screen.Print("hi", 10, 10, 0xFFFFFF);
+        }
+
+
+        public void OnResize()
+        {
+            float pixelsPerWorldSpaceUnit = 100;
+            _worldSpaceSize = new Vector2((float) Screen.Width / pixelsPerWorldSpaceUnit, 
+                                          (float) Screen.Height / pixelsPerWorldSpaceUnit);
         }
 
         private int ToScreenColor(Vector3 worldColor)

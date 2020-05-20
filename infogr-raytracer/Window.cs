@@ -74,6 +74,7 @@ namespace infogr_raytracer
             _game.Screen.Unload();
             _game.Screen = new Surface(Width, Height);
             
+            _game.OnResize();
             base.OnResize(e);
         }
 
