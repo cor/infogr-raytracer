@@ -26,11 +26,38 @@ namespace infogr_raytracer
         {
             // Clear the screen
             Screen.Clear(255);
-            
-            // Draw stuff on our screen
-            double size = 200 +  Math.Sin(DateTime.Now.Ticks / 10_000_000.0 * 2 * Math.PI) * 100;
-            Screen.Bar(0, 0, (int) size, (int) size, 255 << 8);
+
+            for (int x = 0; x < Screen.Width; x++)
+            {
+                for (int y = 0; y < Screen.Height; y++)
+                {
+                    Vector3 colorForPixel = Trace(new Vector2(WorldSpaceX(x), WorldSpaceY(y)));
+                    Screen.Plot(x, y, ToScreenColor(colorForPixel));
+                }
+            }
             Screen.Print("hi", 10, 10, 0xFFFFFF);
+        }
+
+        private int ToScreenColor(Vector3 worldColor)
+        {
+            return (int) (Math.Min(worldColor.X * 255, 255)) << 16 + 
+                   (int) (Math.Min(worldColor.Y * 255, 255)) << 8 +
+                   (int) (Math.Min(worldColor.Z * 255, 255)); 
+        }
+
+        private Vector3 Trace(Vector2 point)
+        {
+            return new Vector3(1, 1, 1);
+        }
+
+        private float WorldSpaceX(int screenSpaceX)
+        {
+            return (float) screenSpaceX / (float) Screen.Width;
+        }
+
+        private float WorldSpaceY(int screenSpaceY)
+        {
+            return (float) screenSpaceY /  (float) Screen.Height;
         }
     }
 }
