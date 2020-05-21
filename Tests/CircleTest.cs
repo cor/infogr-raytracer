@@ -146,6 +146,20 @@ namespace Tests
                 Ray = new Ray() { Origin = new Vector2(4, 4), Direction = new Vector2(0, 1),  T=50f},
                 ExpectedResult = true,
                 Description = "Ray from the inside of a tiny circle"
+            },
+            new CircleTestCase()
+            {
+                Circle = new Circle() { Position = new Vector2(4, 4), Radius = 0.001f},
+                Ray = new Ray() { Origin = new Vector2(0, 0), Direction = new Vector2(1, 1),  T=1f},
+                ExpectedResult = false,
+                Description = "Ray end before reaching intersection"
+            },
+            new CircleTestCase()
+            {
+                Circle = new Circle() { Position = new Vector2(4, 4), Radius = 1f},
+                Ray = new Ray() { Origin = new Vector2(0, 0), Direction = new Vector2(1, 1),  T=1f},
+                ExpectedResult = false,
+                Description = "Ray end before reaching intersection"
             }
         };
         

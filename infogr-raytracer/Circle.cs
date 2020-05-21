@@ -15,19 +15,40 @@ namespace infogr_raytracer
 
         public bool Intersects(Ray ray)
         {
-            var end = ray.End();
-            var xLength = end.X - ray.Origin.X;
-            var yLength = (end.Y - ray.Origin.Y);
-            var a =  xLength * xLength +
-                     yLength * yLength;
-
-            var xDiff = (ray.Origin.X - Position.X);
-            var yDiff = (ray.Origin.Y - Position.Y);
-            var b = 2 * xLength * xDiff + 2 * yLength * yDiff;
-            var c = xDiff * xDiff + yDiff * yDiff - Radius * Radius;
-            
+            float a = Vector2.Dot(ray.Direction, ray.Direction);
+            var delta = ray.Origin - Position;
+            float b = Vector2.Dot(ray.Direction, delta);
+            float c = Vector2.Dot(delta, delta) - Radius * Radius;
             float d = b * b - 4 * a * c;
-            return d >= 0f;
+            if (d < 0) return false;
+            
+            float sqrt = (float) Math.Sqrt(d);
+            float distance = (-b - sqrt) / a;
+            if (distance < 0) distance = (-b + sqrt) / a;
+
+            return (distance > 0 && distance < ray.End().Length);
+
+            // // var minLength = (Position - ray.Origin).Length - Radius;
+            // // if (ray.T < minLength) return false;
+            //
+            // // var length = end - ray.Origin;
+            // // var length = ray.Origin - Position;
+            //
+            // var length = ray.Direction * ray.T;
+            //
+            // var po = ray.Origin - Position;
+            // // Console.WriteLine($"po: {po}, length {length}");
+            // if (Vector2.Dot(po, length) > 0) return false;
+            // var a = Vector2.Dot(length, length);
+            // var b = Vector2.Dot(length, po) * 2;
+            // var c = Vector2.Dot(po, po) - Radius * Radius;
+            //
+            // float d = b * b - 4 * a * c;
+            //
+            // // var t = 2 * c / (-b + (float) Math.Sqrt(b * b - 4 * a * c));
+            // // var xy = length * t;
+            // // Console.WriteLine($"xy: {xy}");
+            // return d >= 0f;
         }
 
         public Vector3 Trace(Ray ray)
