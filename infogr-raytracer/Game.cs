@@ -8,10 +8,22 @@ namespace infogr_raytracer
     public class Game
     {
         public Surface Screen;
-        private Scene _scene;
+        
+        private Scene _scene = new Scene()
+        {
+            Lights = new List<Light>()
+            {
+                new Light() { Color = new Vector3(1, 1, 1), Position = new Vector2(2f, 2f) },
+                new Light() { Color = new Vector3(3, 2, 1), Position = new Vector2(3f, 4f) },
+                new Light() { Color = new Vector3(3, 4, 5), Position = new Vector2(3f, 8f) },
+                new Light() { Color = new Vector3(1, 0, 0), Position = new Vector2(7f, 8f) },
+                new Light() { Color = new Vector3(0, 0, 1), Position = new Vector2(7.5f, 8f) }
+            }
+        };
+        
         private Camera _camera = new Camera()
         {
-            Position = new Vector2(0, -3)
+            Position = new Vector2(0, 0)
         };
 
         /// <summary>
@@ -20,17 +32,7 @@ namespace infogr_raytracer
         /// </summary>
         public void OnLoad()
         {
-            _scene = new Scene(this)
-            {
-                Lights = new List<Light>()
-                {
-                    new Light() { Color = new Vector3(1, 1, 1), Position = new Vector2(2f, 2f) },
-                    new Light() { Color = new Vector3(3, 2, 1), Position = new Vector2(3f, 4f) },
-                    new Light() { Color = new Vector3(3, 4, 5), Position = new Vector2(3f, 8f) },
-                    new Light() { Color = new Vector3(1, 0, 0), Position = new Vector2(7f, 8f) },
-                    new Light() { Color = new Vector3(0, 0, 1), Position = new Vector2(7.5f, 8f) }
-                }
-            };
+            
         }
 
         /// <summary>
