@@ -37,7 +37,6 @@ namespace infogr_raytracer
         /// </summary>
         public void OnLoad()
         {
-            
         }
 
         /// <summary>
