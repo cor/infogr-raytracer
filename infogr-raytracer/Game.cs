@@ -37,6 +37,52 @@ namespace infogr_raytracer
         /// </summary>
         public void OnLoad()
         {
+            Ray aRay = new Ray()
+            {
+                Origin = new Vector2(0, 1), 
+                Direction = new Vector2(1, 0)
+            };
+
+            Circle aCircle = new Circle()
+            {
+                Position = new Vector2(5, 1),
+                Radius = 2f
+            };
+
+            if (aCircle.Intersects(aRay))
+                aCircle.Trace(aRay);
+            
+            Ray bRay = new Ray()
+            {
+                Origin = new Vector2(0, 1), 
+                Direction = new Vector2(1, 0)
+            };
+
+            Circle bCircle = new Circle()
+            {
+                Position = new Vector2(5, 10),
+                Radius = 2f
+            };
+
+            if (bCircle.Intersects(bRay))
+                bCircle.Trace(bRay);
+
+
+            Ray cRay = new Ray()
+            {
+                Origin = new Vector2(0, 1), 
+                Direction = new Vector2(1, 0)
+            };
+
+            Circle cCircle = new Circle()
+            {
+                Position = new Vector2(2, 2f),
+                Radius = 1f
+            };
+
+            if (cCircle.Intersects(cRay))
+                cCircle.Trace(cRay);
+
         }
 
         /// <summary>

@@ -29,12 +29,43 @@ namespace infogr_raytracer
             Console.WriteLine($"c: {c}");
             Console.WriteLine($"d: {d}");
             
-            return (int) d >= 0;
+            return d >= 0f;
         }
 
         public Vector3 Trace(Ray ray)
         {
-            throw new System.NotImplementedException();
+            Vector2 po = ray.Origin - Position;
+
+            float a = Vector2.Dot(ray.Origin, ray.Origin);
+            float b = Vector2.Dot(ray.Direction, po) * 2;
+            float c = Vector2.Dot(po, po) - (Radius * Radius);
+            
+            float d = b * b - 4 * a * c;
+
+
+            if (d > 0)
+            {
+                float dSqrt = (float)Math.Sqrt(d);
+                float t1 = (-b + dSqrt) / (2 * a);
+                float t2 = (-b - dSqrt) / (2 * a);
+
+                Vector2 intersection1 = ray.Origin + ray.Direction * t1;
+                Vector2 intersection2 = ray.Origin + ray.Direction * t2;
+                
+                Console.WriteLine($"intersection1: {intersection1}");
+                Console.WriteLine($"intersection2: {intersection2}");
+            }
+            else // d = 0
+            {
+                float t = -b / (2 * a);
+                Vector2 intersection = ray.Origin + ray.Direction * t;
+                
+                Console.WriteLine($"intersection: {intersection}");
+            }
+            
+            
+            // TODO: Return result
+            return Vector3.One;
         }
     }
 }
