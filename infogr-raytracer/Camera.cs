@@ -4,14 +4,18 @@ namespace infogr_raytracer
 {
     public struct Camera
     {
+        /// <summary>
+        /// The Camera's position (in world space)
+        /// </summary>
         public Vector2 Position;
+        
         private Vector2 _viewPort;
         private Vector2 _screenResolution;
-
         private float _screenSizeWorldSizeRatio;
         
         /// <summary>
         /// Convert a screen space coordinate to a world space coordinate
+        /// Takes the current position into account
         /// </summary>
         /// <param name="screenSpaceX">The X component of the screen space coordinate</param>
         /// <param name="screenSpaceY">The Y component of the screen space coordinate</param>
