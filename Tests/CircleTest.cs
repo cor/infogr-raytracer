@@ -53,7 +53,7 @@ namespace Tests
             },
             new CircleTestCase()
             {
-                Circle = new Circle() { Position = new Vector2(2, 2), Radius = 1f},
+                Circle = new Circle() { Position = new Vector2(0, 0), Radius = 1f},
                 Ray = new Ray() { Origin = new Vector2(2, -1), Direction = new Vector2(0, 1)},
                 ExpectedResult = true,
                 Description = "Orthogonal from bottom"
@@ -85,6 +85,41 @@ namespace Tests
                 Ray = new Ray() { Origin = new Vector2(4, -4), Direction = new Vector2(1, -1)},
                 ExpectedResult = true,
                 Description = "Orthogonal from bottom right"
+            },
+            new CircleTestCase()
+            {
+                Circle = new Circle() { Position = new Vector2(4, 4), Radius = 1f},
+                Ray = new Ray() { Origin = new Vector2(0, 3), Direction = new Vector2(1, 0)},
+                ExpectedResult = true,
+                Description = "Touch the circle at the bottom"
+            },
+            new CircleTestCase()
+            {
+                Circle = new Circle() { Position = new Vector2(4, 4), Radius = 1f},
+                Ray = new Ray() { Origin = new Vector2(0, 10), Direction = new Vector2(1, 0)},
+                ExpectedResult = false,
+                Description = "Ray that flies above the circle"
+            },
+            new CircleTestCase()
+            {
+                Circle = new Circle() { Position = new Vector2(4, 4), Radius = 1f},
+                Ray = new Ray() { Origin = new Vector2(0, -10), Direction = new Vector2(1, 0)},
+                ExpectedResult = false,
+                Description = "Ray that flies beneath the circle"
+            },
+            new CircleTestCase()
+            {
+                Circle = new Circle() { Position = new Vector2(4, 4), Radius = 1f},
+                Ray = new Ray() { Origin = new Vector2(0, 0), Direction = new Vector2(0, 1)},
+                ExpectedResult = false,
+                Description = "Ray that flies to the left of the circle"
+            },
+            new CircleTestCase()
+            {
+                Circle = new Circle() { Position = new Vector2(4, 4), Radius = 1f},
+                Ray = new Ray() { Origin = new Vector2(6, 0), Direction = new Vector2(0, 1)},
+                ExpectedResult = false,
+                Description = "Ray that flies to the right of the circle"
             }
         };
         
