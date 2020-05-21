@@ -13,51 +13,31 @@ namespace infogr_raytracer
             Position = position;
         }
 
+        /// <summary>
+        /// Return if this circle intersects a ray
+        /// Uses the ABC formula
+        /// </summary>
+        /// <param name="ray">The ray for which the intersection should be checked</param>
+        /// <returns>If the circle intersects the ray.</returns>
         public bool Intersects(Ray ray)
         {
-            var delta = ray.Origin - Position;
+            Vector2 positionToRayOrigin = ray.Origin - Position;
+            
+            // Apply ABC formula
             float a = Vector2.Dot(ray.Direction, ray.Direction);
-            float b = Vector2.Dot(ray.Direction, delta);
-            float c = Vector2.Dot(delta, delta) - Radius * Radius;
+            float b = Vector2.Dot(ray.Direction, positionToRayOrigin);
+            float c = Vector2.Dot(positionToRayOrigin, positionToRayOrigin) - Radius * Radius;
             float d = b * b - a * c;
+            
+            // Early exit if there are no intersections
             if (d < 0) return false;
             
-            float sqrt = (float) Math.Sqrt(d);
-            float distance = (-b - sqrt) / a;
-            if (distance < 0) distance = (-b + sqrt) / a;
+            // Calculate intersections based on d
+            float sqrtD = (float) Math.Sqrt(d);
+            float distance = Math.Max((-b - sqrtD) / a, (-b + sqrtD) / a);
 
+            // Check if our result is within the ray's length
             return (distance > 0 && distance < ray.T);
-        }
-
-        public Vector3 Trace(Ray ray)
-        {
-            Vector2 po = ray.Origin - Position;
-
-            float a = Vector2.Dot(ray.Origin, ray.Origin);
-            float b = Vector2.Dot(ray.Direction, po) * 2;
-            float c = Vector2.Dot(po, po) - (Radius * Radius);
-            
-            float d = b * b - 4 * a * c;
-
-
-            if (d > 0)
-            {
-                float dSqrt = (float)Math.Sqrt(d);
-                float t1 = (-b + dSqrt) / (2 * a);
-                float t2 = (-b - dSqrt) / (2 * a);
-
-                Vector2 intersection1 = ray.Origin + ray.Direction * t1;
-                Vector2 intersection2 = ray.Origin + ray.Direction * t2;
-            }
-            else // d = 0
-            {
-                float t = -b / (2 * a);
-                Vector2 intersection = ray.Origin + ray.Direction * t;
-            }
-            
-            
-            // TODO: Return result
-            return Vector3.One;
         }
     }
 }

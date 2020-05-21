@@ -6,6 +6,8 @@ namespace infogr_raytracer
     {
         void Move(Vector2 position);
         bool Intersects(Ray ray);
-        Vector3 Trace(Ray ray);
+        
+        // TODO:
+        // Vector3 Trace(Ray ray);
     }
 }
