@@ -55,7 +55,6 @@
         <Compile Include="Light.cs" />
         <Compile Include="Ray.cs" />
         <Compile Include="Scene.cs" />
-        <Compile Include="Square.cs" />
         <Compile Include="Window.cs" />
         <Compile Include="Program.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
