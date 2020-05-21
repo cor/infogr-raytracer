@@ -24,38 +24,10 @@ namespace infogr_raytracer
             {
                 new Circle() { Position = new Vector2(4, 4.5f), Radius = 0.1f },
                 new Circle() { Position = new Vector2(6.5f,6.5f), Radius = 1f },
-                new Circle() { Position = new Vector2(4f,4), Radius = 0.3f }
+                new Circle() { Position = new Vector2(4f,4), Radius = 0.3f },
+                new Circle() { Position = new Vector2(3f, 3f), Radius = 0.1f}
             }
         };
-    
-        // private Scene _scene = new Scene()
-        // {
-        //     Lights = new List<Light>()
-        //     {
-        //         new Light() { Color = 3 * new Vector3(1, 1, 1), Position = new Vector2(2f, 4f) },
-        //     },
-        //     GameObjects = new List<IGameObject>()
-        //     {
-        //         new Circle() { Position = new Vector2(4, 4), Radius = 0.5f},
-        //         // new Circle() { Position = new Vector2(0, 4), Radius = 0.5f}
-        //     }
-        // };
-
-
-
-        
-        // private Scene _scene = new Scene()
-        // {
-        //     Lights = new List<Light>()
-        //     {
-        //         new Light() { Color = 3 * new Vector3(1, 1, 1), Position = new Vector2(1f, 4f) },
-        //     },
-        //     GameObjects = new List<IGameObject>()
-        //     {
-        //         new Circle() { Position = new Vector2(3, 4), Radius = 0.5f}
-        //     }
-        // };
-        
         
         private Camera _camera = new Camera()
         {
