@@ -8,16 +8,20 @@ namespace infogr_raytracer
         public Vector2 Position;
         public float Radius;
         
+        /// <summary>
+        /// Move a circle to a new position.
+        /// </summary>
+        /// <param name="position">The circle's new position.</param>
         public void Move(Vector2 position)
         {
             Position = position;
         }
 
         /// <summary>
-        /// Return if this circle intersects a ray
-        /// Uses the ABC formula
+        /// Return if this circle intersects a ray.
+        /// Uses the ABC formula.
         /// </summary>
-        /// <param name="ray">The ray for which the intersection should be checked</param>
+        /// <param name="ray">The ray for which the intersection should be checked.</param>
         /// <returns>If the circle intersects the ray.</returns>
         public bool Intersects(Ray ray)
         {
@@ -37,7 +41,7 @@ namespace infogr_raytracer
             float distance = Math.Max((-b - sqrtD) / a, (-b + sqrtD) / a);
 
             // Check if our result is within the ray's length
-            return (distance > 0 && distance < ray.T);
+            return (distance > 0 && distance < ray.Magnitude);
         }
     }
 }

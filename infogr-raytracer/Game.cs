@@ -53,7 +53,7 @@ namespace infogr_raytracer
         }
 
         /// <summary>
-        /// Render our scene
+        /// Render our scene.
         /// </summary>
         private void RenderScene()
         {
@@ -72,7 +72,7 @@ namespace infogr_raytracer
         }
 
         /// <summary>
-        /// Moves the Camera using the arrow keys
+        /// Moves the Camera using the arrow keys.
         /// </summary>
         private void MoveCamera()
         {
@@ -96,10 +96,10 @@ namespace infogr_raytracer
         }
 
         /// <summary>
-        /// Convert a world color (float, [0-1], and [1, ->) for HDR), to a screen color (int, [0-255])
+        /// Convert a world color (float, [0-1], and [1, ->) for HDR), to a screen color (int, [0-255]).
         /// </summary>
-        /// <param name="worldColor">The world color of type float, [0-1], and [1, ->)</param>
-        /// <returns>A screen color of type int, [0-255]</returns>
+        /// <param name="worldColor">The world color of type float, [0-1], and [1, ->).</param>
+        /// <returns>A screen color of type int, [0-255].</returns>
         private int ToScreenColor(Vector3 worldColor)
         {
             return ((int) (Math.Min(worldColor.X * 255, 255)) << 16) + 
@@ -108,9 +108,9 @@ namespace infogr_raytracer
         }
 
         /// <summary>
-        /// Calculate which color a world space point should have
+        /// Calculate which color a world space point should have.
         /// </summary>
-        /// <param name="point">A world space point for which the color should be determined</param>
+        /// <param name="point">A world space point for which the color should be determined.</param>
         /// <returns>The determined color</returns>
         private Vector3 Trace(Vector2 point)
         {
@@ -120,7 +120,7 @@ namespace infogr_raytracer
             {
                 // Construct ray from point to the light source
                 Vector2 vectorToLight = light.Position - point;
-                Ray rayToLight = new Ray() { Origin = point, Direction = vectorToLight, T = vectorToLight.Length};
+                Ray rayToLight = new Ray() { Origin = point, Direction = vectorToLight, Magnitude = vectorToLight.Length};
                 
                 // Check if the light is occluded (intersected) by a Game Object, continue if it is occluded
                 if (_scene.GameObjects.Exists(gameObject => gameObject.Intersects(rayToLight))) continue;
