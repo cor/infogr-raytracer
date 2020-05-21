@@ -38,7 +38,8 @@ namespace infogr_raytracer
             
             // Calculate intersections based on d
             float sqrtD = (float) Math.Sqrt(d);
-            float distance = Math.Max((-b - sqrtD) / a, (-b + sqrtD) / a);
+            float distance = (-b - sqrtD) / a; 
+            if (distance < 0) distance = (-b + sqrtD) / a;
 
             // Check if our result is within the ray's length
             return (distance > 0 && distance < ray.Magnitude);
