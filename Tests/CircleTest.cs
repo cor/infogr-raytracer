@@ -16,20 +16,6 @@ namespace Tests
             public string Description;
         }
 
-
-        // private static Circle circle = new Circle()
-        // {
-        //     Position = new Vector2(2f,2f),
-        //     Radius = 1f,
-        // };
-        //
-        // private static List<(Ray, bool, string)> cases = new List<(Ray, bool, string)>()
-        // {
-        //     (new Ray() {Origin = new Vector2(0, 2), Direction = new Vector2(1, 0)}, true, "A"),
-        //     (new Ray() {Origin = new Vector2(0, 2), Direction = new Vector2(1, 0)}, true, "B"),
-        //     (new Ray() {Origin = new Vector2(3, 0), Direction = new Vector2(-1, 0), true, ""})
-        // };
-        
         private static List<CircleTestCase> testCases = new List<CircleTestCase>()
         {
             new CircleTestCase()
@@ -38,7 +24,35 @@ namespace Tests
                 Ray = new Ray() { Origin = new Vector2(4, 0), Direction = new Vector2(-1, 0)},
                 ExpectedResult = true,
                 Description = "Intersection near origin"
-            }
+            },
+            new CircleTestCase()
+            {
+                Circle = new Circle() { Position = new Vector2(2, 2), Radius = 1f},
+                Ray = new Ray() { Origin = new Vector2(0, 2), Direction = new Vector2(1, 0)},
+                ExpectedResult = true,
+                Description = "Orthogonal from left"
+            },
+            new CircleTestCase()
+            {
+                Circle = new Circle() { Position = new Vector2(2, 2), Radius = 1f},
+                Ray = new Ray() { Origin = new Vector2(2, 4), Direction = new Vector2(0, -1)},
+                ExpectedResult = true,
+                Description = "Orthogonal from top"
+            },
+            new CircleTestCase()
+            {
+                Circle = new Circle() { Position = new Vector2(2, 2), Radius = 1f},
+                Ray = new Ray() { Origin = new Vector2(4, 2), Direction = new Vector2(-1, 0)},
+                ExpectedResult = true,
+                Description = "Orthogonal from right"
+            },
+            new CircleTestCase()
+            {
+                Circle = new Circle() { Position = new Vector2(0, 0), Radius = 1f},
+                Ray = new Ray() { Origin = new Vector2(2, -1), Direction = new Vector2(0, 1)},
+                ExpectedResult = true,
+                Description = "Orthogonal from bottom"
+            },
         };
         
         [Test]
