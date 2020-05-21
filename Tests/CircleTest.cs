@@ -14,6 +14,11 @@ namespace Tests
             public Circle Circle;
             public bool ExpectedResult;
             public string Description;
+
+            public override string ToString()
+            {
+                return Description;
+            }
         }
 
         private static List<CircleTestCase> testCases = new List<CircleTestCase>()
