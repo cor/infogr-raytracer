@@ -18,6 +18,11 @@ namespace infogr_raytracer
                 new Light() { Color = new Vector3(3, 4, 5), Position = new Vector2(3f, 8f) },
                 new Light() { Color = new Vector3(1, 0, 0), Position = new Vector2(7f, 8f) },
                 new Light() { Color = new Vector3(0, 0, 1), Position = new Vector2(7.5f, 8f) }
+            },
+            GameObjects = new List<IGameObject>()
+            {
+                new Circle(),
+                new Square()
             }
         };
         
