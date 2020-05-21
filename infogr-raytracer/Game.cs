@@ -8,9 +8,12 @@ namespace infogr_raytracer
     public class Game
     {
         public Surface Screen;
-
-        private List<Light> _lights;
-        private Vector2 _worldSpaceSize = new Vector2(10f, 10f);
+        private Scene _scene;
+        private Camera _camera = new Camera()
+        {
+            Position = new Vector2(1, 1), 
+            ViewPort = new Vector2(10, 10)
+        };
 
         /// <summary>
         /// Called when the Game is loaded.
@@ -18,13 +21,16 @@ namespace infogr_raytracer
         /// </summary>
         public void OnLoad()
         {
-            _lights = new List<Light>()
+            _scene = new Scene(this)
             {
-                new Light() { Color = new Vector3(1, 1, 1), Position = new Vector2(2f, 2f) },
-                new Light() { Color = new Vector3(3, 2, 1), Position = new Vector2(3f, 4f) },
-                new Light() { Color = new Vector3(3, 4, 5), Position = new Vector2(3f, 8f) },
-                new Light() { Color = new Vector3(1, 0, 0), Position = new Vector2(7f, 8f) },
-                new Light() { Color = new Vector3(0, 0, 1), Position = new Vector2(7.5f, 8f) }
+                Lights = new List<Light>()
+                {
+                    new Light() { Color = new Vector3(1, 1, 1), Position = new Vector2(2f, 2f) },
+                    new Light() { Color = new Vector3(3, 2, 1), Position = new Vector2(3f, 4f) },
+                    new Light() { Color = new Vector3(3, 4, 5), Position = new Vector2(3f, 8f) },
+                    new Light() { Color = new Vector3(1, 0, 0), Position = new Vector2(7f, 8f) },
+                    new Light() { Color = new Vector3(0, 0, 1), Position = new Vector2(7.5f, 8f) }
+                }
             };
         }
 
@@ -40,7 +46,7 @@ namespace infogr_raytracer
             {
                 for (int y = 0; y < Screen.Height; y++)
                 {
-                    Vector3 colorForPixel = Trace(new Vector2(WorldSpaceX(x), WorldSpaceY(y)));
+                    Vector3 colorForPixel = Trace(new Vector2(_camera.WorldSpaceX(x), _camera.WorldSpaceY(y)));
                     Screen.Plot(x, y, ToScreenColor(colorForPixel));
                 }
             }
@@ -51,7 +57,8 @@ namespace infogr_raytracer
         public void OnResize()
         {
             float pixelsPerWorldSpaceUnit = 100;
-            _worldSpaceSize = new Vector2((float) Screen.Width / pixelsPerWorldSpaceUnit, 
+            _camera.ScreenResolution = new Vector2(Screen.Width, Screen.Height);
+            _camera.ViewPort = new Vector2((float) Screen.Width / pixelsPerWorldSpaceUnit, 
                                           (float) Screen.Height / pixelsPerWorldSpaceUnit);
         }
 
@@ -66,7 +73,7 @@ namespace infogr_raytracer
         {
             Vector3 colorAtPoint = new Vector3(0, 0, 0);
             
-            foreach (Light light in _lights)
+            foreach (Light light in _scene.Lights)
             {
                 Vector2 pointToLight = light.Position - point;
                 float distanceToLight = pointToLight.Length;
@@ -76,18 +83,6 @@ namespace infogr_raytracer
             }
             
             return colorAtPoint;
-        }
-
-        private float WorldSpaceX(int screenSpaceX)
-        {
-            float ratio = ((float) _worldSpaceSize.X / (float) Screen.Width);
-            return (float) screenSpaceX * ratio;
-        }
-
-        private float WorldSpaceY(int screenSpaceY)
-        {
-            float ratio = ((float) _worldSpaceSize.Y / (float) Screen.Height);
-            return _worldSpaceSize.Y - screenSpaceY * ratio;
         }
     }
 }
