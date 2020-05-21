@@ -11,8 +11,7 @@ namespace infogr_raytracer
         private Scene _scene;
         private Camera _camera = new Camera()
         {
-            Position = new Vector2(1, 1), 
-            ViewPort = new Vector2(10, 10)
+            Position = new Vector2(0, -3)
         };
 
         /// <summary>
@@ -54,6 +53,9 @@ namespace infogr_raytracer
         }
 
 
+        /// <summary>
+        /// On Window resize call the camera's resize method.
+        /// </summary>
         public void OnResize()
         {
            _camera.Resize(Screen.Width, Screen.Height);

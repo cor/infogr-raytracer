@@ -5,28 +5,39 @@ namespace infogr_raytracer
     public struct Camera
     {
         public Vector2 Position;
-        public Vector2 ViewPort;
-        public Vector2 ScreenResolution;
+        private Vector2 _viewPort;
+        private Vector2 _screenResolution;
 
         private float _screenSizeWorldSizeRatio;
         
+        /// <summary>
+        /// Convert a screen space coordinate to a world space coordinate
+        /// </summary>
+        /// <param name="screenSpaceX">The X component of the screen space coordinate</param>
+        /// <param name="screenSpaceY">The Y component of the screen space coordinate</param>
+        /// <returns>The screen space coordinate</returns>
         public Vector2 WorldSpace(int screenSpaceX, int screenSpaceY)
         {
             // float ratio = ((float) ViewPort.X / (float) ScreenResolution.X);
             return new Vector2(
                 (float) screenSpaceX * _screenSizeWorldSizeRatio,
-                (float) ViewPort.Y - screenSpaceY * _screenSizeWorldSizeRatio
-            );
+                (float) _viewPort.Y - screenSpaceY * _screenSizeWorldSizeRatio
+            ) + Position;
         }
 
+        /// <summary>
+        /// Handle screen resizing by adjusting the screen resolution, viewport and world size ratio
+        /// </summary>
+        /// <param name="screenWidth">The new screen width</param>
+        /// <param name="screenHeight">The new screen height</param>
         public void Resize(int screenWidth, int screenHeight)
         {
             float pixelsPerWorldSpaceUnit = 100;
-            ScreenResolution = new Vector2(screenWidth, screenHeight);
-            ViewPort = new Vector2((float) screenWidth / pixelsPerWorldSpaceUnit, 
+            _screenResolution = new Vector2(screenWidth, screenHeight);
+            _viewPort = new Vector2((float) screenWidth / pixelsPerWorldSpaceUnit, 
                 (float) screenHeight / pixelsPerWorldSpaceUnit);
             
-            _screenSizeWorldSizeRatio = ((float) ViewPort.X / (float) ScreenResolution.X);
+            _screenSizeWorldSizeRatio = ((float) _viewPort.X / (float) _screenResolution.X);
         }
     }
 }
