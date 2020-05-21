@@ -9,34 +9,35 @@ namespace infogr_raytracer
     {
         public Surface Screen;
         
-        private Scene _scene = new Scene()
-        {
-            Lights = new List<Light>()
-            {
-                new Light() { Color = new Vector3(1, 1, 1), Position = new Vector2(2f, 2f) },
-                new Light() { Color = new Vector3(3, 2, 1), Position = new Vector2(3f, 4f) },
-                new Light() { Color = new Vector3(3, 4, 5), Position = new Vector2(3f, 8f) },
-                new Light() { Color = new Vector3(1, 0, 0), Position = new Vector2(7f, 8f) },
-                // new Light() { Color = new Vector3(0, 0, 1), Position = new Vector2(7.5f, 8f) }
-            },
-            GameObjects = new List<IGameObject>()
-            {
-                new Circle() { Position = new Vector2(4, 4.5f), Radius = 0.1f },
-                // new Circle() { Position = new Vector2(9,9), Radius = 5f },
-                // new Circle() { Position = new Vector2(4f,4), Radius = 0.3f }
-            }
-        };
-        
         // private Scene _scene = new Scene()
         // {
         //     Lights = new List<Light>()
         //     {
         //         new Light() { Color = new Vector3(1, 1, 1), Position = new Vector2(2f, 2f) },
+        //         new Light() { Color = new Vector3(3, 2, 1), Position = new Vector2(3f, 4f) },
+        //         new Light() { Color = new Vector3(3, 4, 5), Position = new Vector2(3f, 8f) },
+        //         new Light() { Color = new Vector3(1, 0, 0), Position = new Vector2(7f, 8f) },
+        //         // new Light() { Color = new Vector3(0, 0, 1), Position = new Vector2(7.5f, 8f) }
         //     },
         //     GameObjects = new List<IGameObject>()
         //     {
+        //         new Circle() { Position = new Vector2(4, 4.5f), Radius = 0.1f },
+        //         // new Circle() { Position = new Vector2(9,9), Radius = 5f },
+        //         // new Circle() { Position = new Vector2(4f,4), Radius = 0.3f }
         //     }
         // };
+        
+        private Scene _scene = new Scene()
+        {
+            Lights = new List<Light>()
+            {
+                new Light() { Color = 3 * new Vector3(1, 1, 1), Position = new Vector2(0f, 4f) },
+            },
+            GameObjects = new List<IGameObject>()
+            {
+                new Circle() { Position = new Vector2(1.5f, 4), Radius = 0.5f}
+            }
+        };
         
         
         private Camera _camera = new Camera()
@@ -51,18 +52,29 @@ namespace infogr_raytracer
         public void OnLoad()
         {
 
-            Ray testRay = new Ray()
+            // Test case that demonstrates our bug
+            Light light = new Light()
             {
-                Origin = new Vector2(2, 4),
-                Direction = new Vector2(1, 0)
+                Position = new Vector2(0, 4),
+                Color = new Vector3(1, 1, 1)
             };
+            
+            Vector2 pointThatShouldBeBlack = new Vector2(10, 4);
+            
+            Vector2 pointToLight = light.Position - pointThatShouldBeBlack;
+            
+            Ray ray = new Ray() { Origin = pointThatShouldBeBlack, Direction = pointToLight};
+            
             Circle testCircle = new Circle()
             {
                 Position = new Vector2(4f, 4), 
                 Radius = 2f
             };
 
-            Console.WriteLine(testCircle.Intersects(testRay));
+            Console.WriteLine(testCircle.Intersects(ray));
+            
+            
+            
             
             Ray aRay = new Ray()
             {
@@ -76,7 +88,7 @@ namespace infogr_raytracer
                 Radius = 1f
             };
             
-            Console.WriteLine(aCircle.Intersects(aRay));
+            // Console.WriteLine(aCircle.Intersects(aRay));
 
         }
 
