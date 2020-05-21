@@ -46,7 +46,7 @@ namespace infogr_raytracer
             {
                 for (int y = 0; y < Screen.Height; y++)
                 {
-                    Vector3 colorForPixel = Trace(new Vector2(_camera.WorldSpaceX(x), _camera.WorldSpaceY(y)));
+                    Vector3 colorForPixel = Trace(_camera.WorldSpace(x, y));
                     Screen.Plot(x, y, ToScreenColor(colorForPixel));
                 }
             }
@@ -56,10 +56,7 @@ namespace infogr_raytracer
 
         public void OnResize()
         {
-            float pixelsPerWorldSpaceUnit = 100;
-            _camera.ScreenResolution = new Vector2(Screen.Width, Screen.Height);
-            _camera.ViewPort = new Vector2((float) Screen.Width / pixelsPerWorldSpaceUnit, 
-                                          (float) Screen.Height / pixelsPerWorldSpaceUnit);
+           _camera.Resize(Screen.Width, Screen.Height);
         }
 
         private int ToScreenColor(Vector3 worldColor)
