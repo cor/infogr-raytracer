@@ -10,28 +10,45 @@ namespace infogr_raytracer
     {
         public Surface Screen;
         
+        // private Scene _scene = new Scene()
+        // {
+        //     Lights = new List<Light>()
+        //     {
+        //         new Light() { Color = new Vector3(1, 1, 1), Position = new Vector2(2.0f, 2.0f) },
+        //         new Light() { Color = new Vector3(3, 2, 1), Position = new Vector2(3.0f, 4.0f) },
+        //         new Light() { Color = new Vector3(3, 4, 5), Position = new Vector2(3.0f, 8.0f) },
+        //         new Light() { Color = new Vector3(1, 0, 0), Position = new Vector2(7.0f, 8.0f) },
+        //         new Light() { Color = new Vector3(0, 0, 1), Position = new Vector2(7.5f, 8.0f) }
+        //     },
+        //     GameObjects = new List<IGameObject>()
+        //     {
+        //         new Circle() { Position = new Vector2(4.0f,4.5f), Radius = 0.1f },
+        //         new Circle() { Position = new Vector2(6.5f,6.5f), Radius = 1.0f },
+        //         new Circle() { Position = new Vector2(4.0f,4.0f), Radius = 0.3f },
+        //         new Circle() { Position = new Vector2(3.0f,3.0f), Radius = 0.1f }
+        //     }
+        // };
+
         private Scene _scene = new Scene()
         {
             Lights = new List<Light>()
             {
-                new Light() { Color = new Vector3(1, 1, 1), Position = new Vector2(2f, 2f) },
-                new Light() { Color = new Vector3(3, 2, 1), Position = new Vector2(3f, 4f) },
-                new Light() { Color = new Vector3(3, 4, 5), Position = new Vector2(3f, 8f) },
-                new Light() { Color = new Vector3(1, 0, 0), Position = new Vector2(7f, 8f) },
-                new Light() { Color = new Vector3(0, 0, 1), Position = new Vector2(7.5f, 8f) }
+                new Light() { Position = new Vector2(4.0f, 2.0f), Color =  3 * new Vector3(6, 2, 1) },
+                new Light() { Position = new Vector2(6.0f, 3.0f), Color =  0.5f * new Vector3(1, 2, 3) },
             },
             GameObjects = new List<IGameObject>()
             {
-                new Circle() { Position = new Vector2(4.0f,4.5f), Radius = 0.1f },
-                new Circle() { Position = new Vector2(6.5f,6.5f), Radius = 1.0f },
-                new Circle() { Position = new Vector2(4.0f,4.0f), Radius = 0.3f },
-                new Circle() { Position = new Vector2(3.0f,3.0f), Radius = 0.1f }
+                new Circle() { Position = new Vector2(4.0f, 0.9999f), Radius = 1.0f },
+                new Circle() { Position = new Vector2(4.0f, 3.9999f), Radius = 0.1f },
+                new Circle() { Position = new Vector2(4.5f, 3.5f), Radius = 0.1f },
+                new Circle() { Position = new Vector2(3.5f, 3.5f), Radius = 0.1f }
             }
         };
         
+        
         private Camera _camera = new Camera()
         {
-            Position = new Vector2(-1, -1)
+            Position = new Vector2(0, 0)
         };
 
         /// <summary>
