@@ -53,7 +53,7 @@ namespace Tests
             },
             new CircleTestCase()
             {
-                Circle = new Circle() { Position = new Vector2(0, 0), Radius = 1f},
+                Circle = new Circle() { Position = new Vector2(2, 2), Radius = 1f},
                 Ray = new Ray() { Origin = new Vector2(2, -1), Direction = new Vector2(0, 1)},
                 ExpectedResult = true,
                 Description = "Orthogonal from bottom"
