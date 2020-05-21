@@ -17,18 +17,31 @@ namespace infogr_raytracer
                 new Light() { Color = new Vector3(3, 2, 1), Position = new Vector2(3f, 4f) },
                 new Light() { Color = new Vector3(3, 4, 5), Position = new Vector2(3f, 8f) },
                 new Light() { Color = new Vector3(1, 0, 0), Position = new Vector2(7f, 8f) },
-                new Light() { Color = new Vector3(0, 0, 1), Position = new Vector2(7.5f, 8f) }
+                // new Light() { Color = new Vector3(0, 0, 1), Position = new Vector2(7.5f, 8f) }
             },
             GameObjects = new List<IGameObject>()
             {
-                new Circle(),
-                new Square()
+                new Circle() { Position = new Vector2(4, 4.5f), Radius = 0.1f },
+                // new Circle() { Position = new Vector2(9,9), Radius = 5f },
+                // new Circle() { Position = new Vector2(4f,4), Radius = 0.3f }
             }
         };
         
+        // private Scene _scene = new Scene()
+        // {
+        //     Lights = new List<Light>()
+        //     {
+        //         new Light() { Color = new Vector3(1, 1, 1), Position = new Vector2(2f, 2f) },
+        //     },
+        //     GameObjects = new List<IGameObject>()
+        //     {
+        //     }
+        // };
+        
+        
         private Camera _camera = new Camera()
         {
-            Position = new Vector2(0, 0)
+            Position = new Vector2(-1, -1)
         };
 
         /// <summary>
@@ -37,53 +50,76 @@ namespace infogr_raytracer
         /// </summary>
         public void OnLoad()
         {
+
+            Ray testRay = new Ray()
+            {
+                Origin = new Vector2(2, 4),
+                Direction = new Vector2(1, 0)
+            };
+            Circle testCircle = new Circle()
+            {
+                Position = new Vector2(4f, 4), 
+                Radius = 2f
+            };
+
+            Console.WriteLine(testCircle.Intersects(testRay));
+            
             Ray aRay = new Ray()
             {
                 Origin = new Vector2(0, 1), 
                 Direction = new Vector2(1, 0)
             };
-
+        
             Circle aCircle = new Circle()
             {
                 Position = new Vector2(5, 1),
-                Radius = 2f
-            };
-
-            if (aCircle.Intersects(aRay))
-                aCircle.Trace(aRay);
-            
-            Ray bRay = new Ray()
-            {
-                Origin = new Vector2(0, 1), 
-                Direction = new Vector2(1, 0)
-            };
-
-            Circle bCircle = new Circle()
-            {
-                Position = new Vector2(5, 10),
-                Radius = 2f
-            };
-
-            if (bCircle.Intersects(bRay))
-                bCircle.Trace(bRay);
-
-
-            Ray cRay = new Ray()
-            {
-                Origin = new Vector2(0, 1), 
-                Direction = new Vector2(1, 0)
-            };
-
-            Circle cCircle = new Circle()
-            {
-                Position = new Vector2(2, 2f),
                 Radius = 1f
             };
-
-            if (cCircle.Intersects(cRay))
-                cCircle.Trace(cRay);
+            
+            Console.WriteLine(aCircle.Intersects(aRay));
 
         }
+
+
+        
+
+
+        //
+        // if (aCircle.Intersects(aRay))
+        //     aCircle.Trace(aRay);
+        //
+        // Ray bRay = new Ray()
+        // {
+        //     Origin = new Vector2(0, 1), 
+        //     Direction = new Vector2(1, 0)
+        // };
+        //
+        // Circle bCircle = new Circle()
+        // {
+        //     Position = new Vector2(5, 10),
+        //     Radius = 2f
+        // };
+        //
+        // if (bCircle.Intersects(bRay))
+        //     bCircle.Trace(bRay);
+        //
+        //
+        // Ray cRay = new Ray()
+        // {
+        //     Origin = new Vector2(0, 1), 
+        //     Direction = new Vector2(1, 0)
+        // };
+        //
+        // Circle cCircle = new Circle()
+        // {
+        //     Position = new Vector2(2, 2f),
+        //     Radius = 1f
+        // };
+        //
+        // if (cCircle.Intersects(cRay))
+        //     cCircle.Trace(cRay);
+
+    
 
         /// <summary>
         /// Called when the frame is rendered.
@@ -126,11 +162,18 @@ namespace infogr_raytracer
             
             foreach (Light light in _scene.Lights)
             {
+                // check for occlusions
                 Vector2 pointToLight = light.Position - point;
+                Ray ray = new Ray() { Origin = point, Direction = pointToLight};
+                
+                if (_scene.GameObjects.Exists(gameObject => gameObject.Intersects(ray))) continue;
+                
                 float distanceToLight = pointToLight.Length;
                 float intensity = 1f / (4f * (float) Math.PI * distanceToLight * distanceToLight);
 
                 colorAtPoint += light.Color * intensity;
+                
+                
             }
             
             return colorAtPoint;
