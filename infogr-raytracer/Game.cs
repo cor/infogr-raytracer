@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using OpenTK;
 using OpenTK.Graphics;
+using OpenTK.Input;
 
 namespace infogr_raytracer
 {
@@ -138,6 +139,8 @@ namespace infogr_raytracer
         /// </summary>
         public void OnRenderFrame()
         {
+
+            MoveCamera();
             // Clear the screen
             Screen.Clear(255);
 
@@ -150,6 +153,22 @@ namespace infogr_raytracer
                 }
             }
             Screen.Print("Look on my Works, ye Mighty, and despair!", 10, 10, 0xFFFFFF);
+        }
+
+        private void MoveCamera()
+        {
+            KeyboardState keyboardState = Keyboard.GetState();
+
+            float speed = 0.2f;
+
+            if (keyboardState[Key.Right])
+                _camera.Position.X += speed;
+            if (keyboardState[Key.Left])
+                _camera.Position.X -= speed;
+            if (keyboardState[Key.Up])
+                _camera.Position.Y += speed;
+            if (keyboardState[Key.Down])
+                _camera.Position.Y -= speed;
         }
 
 
