@@ -58,12 +58,41 @@ namespace Tests
                 ExpectedResult = true,
                 Description = "Orthogonal from bottom"
             },
+            new CircleTestCase()
+            {
+                Circle = new Circle() { Position = new Vector2(0, 0), Radius = 1f},
+                Ray = new Ray() { Origin = new Vector2(4, 4), Direction = new Vector2(1, -1)},
+                ExpectedResult = true,
+                Description = "Orthogonal from top left"
+            },
+            new CircleTestCase()
+            {
+                Circle = new Circle() { Position = new Vector2(0, 0), Radius = 1f},
+                Ray = new Ray() { Origin = new Vector2(4, -4), Direction = new Vector2(1, 1)},
+                ExpectedResult = true,
+                Description = "Orthogonal from bottom left"
+            },
+            new CircleTestCase()
+            {
+                Circle = new Circle() { Position = new Vector2(0, 0), Radius = 1f},
+                Ray = new Ray() { Origin = new Vector2(4, 4), Direction = new Vector2(-1, -1)},
+                ExpectedResult = true,
+                Description = "Orthogonal from top right"
+            },
+            new CircleTestCase()
+            {
+                Circle = new Circle() { Position = new Vector2(0, 0), Radius = 1f},
+                Ray = new Ray() { Origin = new Vector2(4, -4), Direction = new Vector2(1, -1)},
+                ExpectedResult = true,
+                Description = "Orthogonal from bottom right"
+            }
         };
         
         [Test]
         [TestCaseSource("testCases")]
         public void TestIntersect(CircleTestCase testCase)
         {
+            Console.WriteLine(testCase.Description);
             Assert.AreEqual(testCase.Circle.Intersects(testCase.Ray), testCase.ExpectedResult, testCase.Description);
         }
     }

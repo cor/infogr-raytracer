@@ -23,11 +23,11 @@ namespace infogr_raytracer
             
             float d = b * b - 4 * a * c;
             
-            // Console.WriteLine("");
-            // Console.WriteLine($"a: {a}");
-            // Console.WriteLine($"b: {b}");
-            // Console.WriteLine($"c: {c}");
-            // Console.WriteLine($"d: {d}");
+            Console.WriteLine("");
+            Console.WriteLine($"a: {a}");
+            Console.WriteLine($"b: {b}");
+            Console.WriteLine($"c: {c}");
+            Console.WriteLine($"d: {d}");
             
             return d >= 0f;
         }
