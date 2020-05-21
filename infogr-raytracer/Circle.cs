@@ -15,20 +15,18 @@ namespace infogr_raytracer
 
         public bool Intersects(Ray ray)
         {
-            Vector2 po = ray.Origin - Position;
+            var end = ray.End();
+            var xLength = end.X - ray.Origin.X;
+            var yLength = (end.Y - ray.Origin.Y);
+            var a =  xLength * xLength +
+                     yLength * yLength;
 
-            float a = Vector2.Dot(ray.Origin, ray.Origin);
-            float b = 2 * Vector2.Dot(ray.Direction, po);
-            float c = Vector2.Dot(po, po) - (Radius * Radius);
+            var xDiff = (ray.Origin.X - Position.X);
+            var yDiff = (ray.Origin.Y - Position.Y);
+            var b = 2 * xLength * xDiff + 2 * yLength * yDiff;
+            var c = xDiff * xDiff + yDiff * yDiff - Radius * Radius;
             
             float d = b * b - 4 * a * c;
-            
-            Console.WriteLine("");
-            Console.WriteLine($"a: {a}");
-            Console.WriteLine($"b: {b}");
-            Console.WriteLine($"c: {c}");
-            Console.WriteLine($"d: {d}");
-            
             return d >= 0f;
         }
 

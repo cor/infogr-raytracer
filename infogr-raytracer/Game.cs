@@ -17,13 +17,13 @@ namespace infogr_raytracer
         //         new Light() { Color = new Vector3(3, 2, 1), Position = new Vector2(3f, 4f) },
         //         new Light() { Color = new Vector3(3, 4, 5), Position = new Vector2(3f, 8f) },
         //         new Light() { Color = new Vector3(1, 0, 0), Position = new Vector2(7f, 8f) },
-        //         // new Light() { Color = new Vector3(0, 0, 1), Position = new Vector2(7.5f, 8f) }
+        //         new Light() { Color = new Vector3(0, 0, 1), Position = new Vector2(7.5f, 8f) }
         //     },
         //     GameObjects = new List<IGameObject>()
         //     {
         //         new Circle() { Position = new Vector2(4, 4.5f), Radius = 0.1f },
-        //         // new Circle() { Position = new Vector2(9,9), Radius = 5f },
-        //         // new Circle() { Position = new Vector2(4f,4), Radius = 0.3f }
+        //         new Circle() { Position = new Vector2(9,9), Radius = 5f },
+        //         new Circle() { Position = new Vector2(4f,4), Radius = 0.3f }
         //     }
         // };
         
@@ -35,7 +35,7 @@ namespace infogr_raytracer
             },
             GameObjects = new List<IGameObject>()
             {
-                new Circle() { Position = new Vector2(1.5f, 4), Radius = 0.5f}
+                new Circle() { Position = new Vector2(2, 4), Radius = 0.5f}
             }
         };
         
@@ -176,7 +176,7 @@ namespace infogr_raytracer
             {
                 // check for occlusions
                 Vector2 pointToLight = light.Position - point;
-                Ray ray = new Ray() { Origin = point, Direction = pointToLight};
+                Ray ray = new Ray() { Origin = point, Direction = pointToLight, T = pointToLight.Length};
                 
                 if (_scene.GameObjects.Exists(gameObject => gameObject.Intersects(ray))) continue;
                 
@@ -184,8 +184,6 @@ namespace infogr_raytracer
                 float intensity = 1f / (4f * (float) Math.PI * distanceToLight * distanceToLight);
 
                 colorAtPoint += light.Color * intensity;
-                
-                
             }
             
             return colorAtPoint;
