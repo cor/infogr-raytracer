@@ -8,23 +8,44 @@ namespace Tests
 {
     public class CircleTest
     {
-        private static Circle circle = new Circle()
+        public struct CircleTestCase
         {
-            Position = new Vector2(2f,2f),
-            Radius = 1f,
-        };
+            public Ray Ray;
+            public Circle Circle;
+            public bool ExpectedResult;
+            public string Description;
+        }
+
+
+        // private static Circle circle = new Circle()
+        // {
+        //     Position = new Vector2(2f,2f),
+        //     Radius = 1f,
+        // };
+        //
+        // private static List<(Ray, bool, string)> cases = new List<(Ray, bool, string)>()
+        // {
+        //     (new Ray() {Origin = new Vector2(0, 2), Direction = new Vector2(1, 0)}, true, "A"),
+        //     (new Ray() {Origin = new Vector2(0, 2), Direction = new Vector2(1, 0)}, true, "B"),
+        //     (new Ray() {Origin = new Vector2(3, 0), Direction = new Vector2(-1, 0), true, ""})
+        // };
         
-        private static List<(Ray, bool, string)> cases = new List<(Ray, bool, string)>()
+        private static List<CircleTestCase> testCases = new List<CircleTestCase>()
         {
-            (new Ray() {Origin = new Vector2(0, 2), Direction = new Vector2(1, 0)}, true, "A"),
-            (new Ray() {Origin = new Vector2(0, 2), Direction = new Vector2(1, 0)}, true, "B")
+            new CircleTestCase()
+            {
+                Circle = new Circle() { Position = new Vector2(0, 0), Radius = 1f},
+                Ray = new Ray() { Origin = new Vector2(4, 0), Direction = new Vector2(-1, 0)},
+                ExpectedResult = true,
+                Description = "Intersection near origin"
+            }
         };
         
         [Test]
-        [TestCaseSource("cases")]
-        public void TestIntersect((Ray, bool, string) testCase)
+        [TestCaseSource("testCases")]
+        public void TestIntersect(CircleTestCase testCase)
         {
-            Assert.AreEqual(testCase.Item2, circle.Intersects(testCase.Item1), testCase.Item3);
+            Assert.AreEqual(testCase.Circle.Intersects(testCase.Ray), testCase.ExpectedResult, testCase.Description);
         }
     }
 }
