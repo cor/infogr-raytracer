@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
 using OpenTK;
-using OpenTK.Graphics;
 using OpenTK.Input;
+
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace infogr_raytracer
 {
@@ -79,16 +81,21 @@ namespace infogr_raytracer
         {
             Screen.Clear(255);
 
-            for (int x = 0; x < Screen.Width; x++)
+            var timer = new System.Diagnostics.Stopwatch();
+            
+            timer.Start();
+            Parallel.For(0, Screen.Width * Screen.Height, (i) =>
             {
-                for (int y = 0; y < Screen.Height; y++)
-                {
-                    Vector3 colorForPixel = Trace(_camera.WorldSpace(x, y));
-                    Screen.Plot(x, y, ToScreenColor(colorForPixel));
-                }
-            }
-
+                var x = i % Screen.Width;
+                var y = i / Screen.Width;
+                Vector3 colorForPixel = Trace(_camera.WorldSpace(x, y));
+                Screen.Plot(x, y, ToScreenColor(colorForPixel));
+            });
+            timer.Stop();
+            
+            var fps = 1000f / timer.ElapsedMilliseconds;
             Screen.Print("Look on my Works, ye Mighty, and despair!", 10, 10, 0xFFFFFF);
+            Screen.Print($"FPS: {fps}", 10, 30, 0xFFFFFF);
         }
 
         /// <summary>
