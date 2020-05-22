@@ -93,7 +93,7 @@ namespace infogr_raytracer
             });
             timer.Stop();
             
-            var fps = timer.ElapsedMilliseconds / 1000f;
+            var fps = 1000f / timer.ElapsedMilliseconds;
             Screen.Print("Look on my Works, ye Mighty, and despair!", 10, 10, 0xFFFFFF);
             Screen.Print($"FPS: {fps}", 10, 30, 0xFFFFFF);
         }
