@@ -56,6 +56,7 @@
         <Compile Include="Ray.cs" />
         <Compile Include="Rectangle.cs" />
         <Compile Include="Scene.cs" />
+        <Compile Include="ShaderGame.cs" />
         <Compile Include="Window.cs" />
         <Compile Include="Program.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
@@ -76,6 +77,12 @@
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </Content>
       <Content Include="shaders\shader.vert" />
+      <Content Update="shaders\raytrace-shader.frag">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+      <Content Update="shaders\raytrace-shader.vert">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
     <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

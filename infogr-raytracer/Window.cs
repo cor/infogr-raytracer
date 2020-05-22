@@ -7,7 +7,11 @@ namespace infogr_raytracer
 {
     public class Window: GameWindow
     {
+        // TODO: Figure out a proper way to set feature flag
+        const bool SHADER_VERSION = true;
+        
         private Game _game;
+        private ShaderGame _shaderGame;
 
         /// <summary>
         /// Constructs a new Window with the specified attributes.
@@ -38,9 +42,17 @@ namespace infogr_raytracer
         protected override void OnLoad(EventArgs e)
         {
             PrintVersionInfo();
-            
-            _game = new Game { Screen = new Surface(Width, Height) };
-            _game.OnLoad();
+
+            if (SHADER_VERSION)
+            {
+                _shaderGame = new ShaderGame();
+                _shaderGame.OnLoad();
+            }
+            else
+            {
+                _game = new Game { Screen = new Surface(Width, Height) };
+                _game.OnLoad();
+            }
 
             base.OnLoad(e);
         }
@@ -53,9 +65,16 @@ namespace infogr_raytracer
             // Clear the screen
             GL.Clear(ClearBufferMask.ColorBufferBit);
 
-            // Let our Game draw stuff to it's Screen
-            _game.OnRenderFrame();
-            _game.Screen.Draw();
+            if (SHADER_VERSION)
+            {
+                _shaderGame.OnRenderFrame();
+            }
+            else
+            {
+                // Let our Game draw stuff to it's Screen
+                _game.OnRenderFrame();
+                _game.Screen.Draw();
+            }
             
             // Show the new frame
             Context.SwapBuffers();
@@ -70,11 +89,19 @@ namespace infogr_raytracer
         protected override void OnResize(EventArgs e)
         {
             GL.Viewport(0, 0, Width, Height);
+
+            // TODO: Implement for SHADER_VERSION
+            if (SHADER_VERSION)
+            {
+                _shaderGame.OnResize(Width, Height);
+            }
+            if (!SHADER_VERSION)
+            {
+                _game.Screen.Unload();
+                _game.Screen = new Surface(Width, Height);
+                _game.OnResize();
+            }
             
-            _game.Screen.Unload();
-            _game.Screen = new Surface(Width, Height);
-            
-            _game.OnResize();
             base.OnResize(e);
         }
 
@@ -85,7 +112,15 @@ namespace infogr_raytracer
         /// <param name="e">Not used.</param>
         protected override void OnUnload(EventArgs e)
         {
-            _game.Screen.Unload();
+            // TODO: Implement for SHADER_VERSION
+            if (SHADER_VERSION)
+            {
+                _shaderGame.OnUnload();
+            }
+            else
+            {
+                _game.Screen.Unload();
+            }
             base.OnUnload(e);
         }
     }
