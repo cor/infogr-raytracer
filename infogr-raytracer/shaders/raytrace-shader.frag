@@ -85,7 +85,71 @@ bool circle_collides(Circle circle, Ray ray)
     return (distance > 0 && distance < ray.magnitude);
 }
 
+struct Rectangle {
+    vec2[4] corners;
+};
 
+Rectangle newRectangle(in vec2 position, float width, float height, float angle) {
+    vec2[4] corners = vec2[4](
+        vec2(-width * 0.5, height * 0.5),
+        vec2(width * 0.5, height * 0.5),
+        vec2(width * 0.5, -height * 0.5),
+        vec2(-width * 0.5, -height * 0.5)
+    );
+    
+    if (angle != 0) {
+        for (int i = 0; i < corners.length(); i++) {
+            vec2 corner = corners[i];
+            corners[i] = vec2(
+                corner.x * cos(angle) - corner.y * sin(angle),
+                corner.xy * sin(angle) + corner.y * cos(angle)
+            );
+        }
+    }
+
+    for (int i = 0; i < corners.length(); i++) {
+        corners[i] += position;
+    }
+    
+    return Rectangle(corners);
+}
+
+bool lineIntersects(Ray ray, vec2 lineStart, vec2 lineEnd) {
+    vec2 rayStart = ray.origin;
+    vec2 rayEnd = ray.origin + ray.direction;
+    
+    vec2 rayStoLineS = lineStart - rayStart;
+    vec2 r = ray.direction * ray.magnitude;
+    vec2 s = lineEnd - lineStart;
+    
+    float crossR = (rayStoLineS.x * r.y) - (rayStoLineS.y * r.x);
+    float crossS = (rayStoLineS.x * s.y) - (rayStoLineS.y * s.x);
+    float rCrossS = r.x * s.y - r.y * s.x;
+    
+    if (crossR == 0) {
+        return ((lineStart.x - rayStart.x < 0) != (lineStart.x - rayEnd.x < 0)) || 
+        ((lineStart.y - rayStart.y < 0) != (lineStart.y - rayEnd.y < 0));
+    }
+    
+    if (rCrossS == 0) {return false;}
+    
+    float t = crossS / rCrossS;
+    float u = crossR / rCrossS;
+    
+    return (t >= 0) && (t <= 1) && (u >= 0) && (u <= 1);
+}
+
+bool rectangleIntersect(Ray ray, Rectangle rect) {
+    vec2[4] corners = rect.corners;
+    return lineIntersects(ray, corners[0], corners[1]) ||
+           lineIntersects(ray, corners[1], corners[2]) ||
+           lineIntersects(ray, corners[2], corners[3]) ||
+           lineIntersects(ray, corners[3], corners[0]);
+}
+
+Rectangle[] rectangles = Rectangle[](
+    newRectangle(vec2(3,3), 1, 1, 0.4)
+);
 
 // Convert point from screen space to world space
 vec2 ToWorldSpace(vec2 screenSpacePoint)
@@ -94,7 +158,6 @@ vec2 ToWorldSpace(vec2 screenSpacePoint)
     
     return screenSpacePoint * vec2(SCREEN_WIDTH, SCREEN_HEIGHT) / ratio; 
 }
-
 
 vec3 Trace(vec2 worldPoint)
 {
@@ -112,6 +175,15 @@ vec3 Trace(vec2 worldPoint)
         for (int c = 0; c < circles.length(); c++) {
             Circle circle = circles[c];
             if (circle_collides(circle, ray)) {
+                occluded = true;
+                break;
+            }
+        }
+        if (occluded) {continue;}
+        
+        for (int r = 0; r < rectangles.length(); r++) {
+            Rectangle rect = rectangles[r];
+            if (rectangleIntersect(ray, rect)) {
                 occluded = true;
                 break;
             }
