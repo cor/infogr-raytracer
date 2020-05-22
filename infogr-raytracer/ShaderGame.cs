@@ -71,6 +71,8 @@ namespace infogr_raytracer
             var stopwatch = new Stopwatch();
             stopwatch.Start();
             
+            _shader.SetFloat("time", (float) Math.Sin(DateTime.Now.Ticks / 1_000_000.0) / 2.0f);
+            
             GL.DrawElements(PrimitiveType.Triangles, _indices.Length, DrawElementsType.UnsignedInt, 0);
             
             stopwatch.Stop();
