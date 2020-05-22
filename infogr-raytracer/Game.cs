@@ -68,6 +68,7 @@ namespace infogr_raytracer
         {
             MoveCamera();
             RenderScene();
+            _scene.GameObjects[3].MoveBy(new Vector2(-0.1f, 0));
         }
 
         /// <summary>

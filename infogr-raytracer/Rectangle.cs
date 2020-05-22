@@ -5,45 +5,50 @@ namespace infogr_raytracer
 {
     public struct Rectangle: IGameObject
     {
-        // Clockwise order, starting with top-left corner
-        private Vector2[] Points;
+        // Clockwise order, starting with top-left corner, with respect to the angle
+        private Vector2[] _corners;
 
         public Rectangle(Vector2 position, float width, float height, float angle = 0)
         {
             // Determine x, y coordinates as if the rectangle were at the origin
-            Points = new[]
+            _corners = new[]
             {
                 new Vector2(- width * 0.5f, + height * 0.5f),
                 new Vector2(+ width * 0.5f, + height * 0.5f),
                 new Vector2(+ width * 0.5f, - height * 0.5f),
-                new Vector2(- width * 0.5f, - height * 0.5f),                
-                // new Vector2(position.X - width * 0.5f, position.Y + height * 0.5f),
-                // new Vector2(position.X + width * 0.5f, position.Y + height * 0.5f),
-                // new Vector2(position.X + width * 0.5f, position.Y - height * 0.5f),
-                // new Vector2(position.X - width * 0.5f, position.Y - height * 0.5f)
+                new Vector2(- width * 0.5f, - height * 0.5f),
             };
 
             // Rotate the points based on angle
             if (angle != 0)
             {
-                for (int i = 0; i < Points.Length; i++)
-                    Points[i] = new Vector2(
-                        Points[i].X * (float) Math.Cos(angle) - Points[i].Y * (float) Math.Sin(angle),
-                        Points[i].X * (float) Math.Sin(angle) + Points[i].Y * (float) Math.Cos(angle));
+                for (int i = 0; i < _corners.Length; i++)
+                    _corners[i] = new Vector2(
+                        _corners[i].X * (float) Math.Cos(angle) - _corners[i].Y * (float) Math.Sin(angle),
+                        _corners[i].X * (float) Math.Sin(angle) + _corners[i].Y * (float) Math.Cos(angle));
             }
             
             // Translate the points to their position
-            for (int i = 0; i < Points.Length; i++)
-                Points[i] += position;
+            for (int i = 0; i < _corners.Length; i++)
+                _corners[i] += position;
+            
         }
 
         public Vector2 Position
         {
-            get => (Points[0] + Points[2]) / 2;
+            get => (_corners[0] + _corners[2]) / 2;
         }
         
         public void Move(Vector2 position)
         {
+            Vector2 translation = position - Position;
+            for (int i = 0; i < _corners.Length; i++)
+                _corners[i] += translation;
+        }
+
+        public void MoveBy(Vector2 translation)
+        {
+            Move(translation + Position);
         }
 
         /// <summary>
@@ -53,10 +58,10 @@ namespace infogr_raytracer
         /// <returns>If the rectangle intersects the ray.</returns>
         public bool Intersects(Ray ray)
         {
-            return _lineIntersects(ray, Points[0], Points[1]) ||
-                   _lineIntersects(ray, Points[1], Points[2]) ||
-                   _lineIntersects(ray, Points[2], Points[3]) ||
-                   _lineIntersects(ray, Points[3], Points[0]);
+            return _lineIntersects(ray, _corners[0], _corners[1]) ||
+                   _lineIntersects(ray, _corners[1], _corners[2]) ||
+                   _lineIntersects(ray, _corners[2], _corners[3]) ||
+                   _lineIntersects(ray, _corners[3], _corners[0]);
         }
 
             
