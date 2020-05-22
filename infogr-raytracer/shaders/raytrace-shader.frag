@@ -81,7 +81,10 @@ vec3 Trace(vec2 worldPoint)
     for (int i = 0; i < lights.length(); i++)
     {
         vec2 vector2Light = lights[i].position - worldPoint;
+        
+        // Don't forget to normalize the ray's direction
         Ray ray = Ray(worldPoint, vector2Light, length(vector2Light));
+        ray.direction = normalize(ray.direction);
 
         bool occluded = false;
         for (int c = 0; c < circles.length(); c++) {
