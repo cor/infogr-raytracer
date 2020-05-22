@@ -40,8 +40,9 @@ namespace infogr_raytracer
             {
                 new Circle() { Position = new Vector2(4.0f, 0.9999f), Radius = 1.0f },
                 new Circle() { Position = new Vector2(4.0f, 3.65f), Radius = 0.1f },
-                new Circle() { Position = new Vector2(4.5f, 3.5f), Radius = 0.1f },
-                new Circle() { Position = new Vector2(3.5f, 3.5f), Radius = 0.1f }
+                // new Circle() { Position = new Vector2(4.5f, 3.5f), Radius = 0.1f },
+                new Circle() { Position = new Vector2(3.5f, 3.5f), Radius = 0.2f },
+                new Rectangle(new Vector2(4.5f, 3.5f), 0.4f, 0.8f)
             }
         };
         
