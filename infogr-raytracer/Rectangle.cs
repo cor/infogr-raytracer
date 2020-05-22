@@ -46,6 +46,10 @@ namespace infogr_raytracer
                 _corners[i] += translation;
         }
 
+        /// <summary>
+        /// Translate a rectangle.
+        /// </summary>
+        /// <param name="translation">The translation by which the rectangle's position should be altered</param>
         public void MoveBy(Vector2 translation)
         {
             Move(translation + Position);

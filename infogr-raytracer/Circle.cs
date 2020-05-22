@@ -18,7 +18,7 @@ namespace infogr_raytracer
         }
         
         /// <summary>
-        /// Move a circle by a translation.
+        /// Translate a circle.
         /// </summary>
         /// <param name="translation">The translation by which the circle's position should be altered</param>
         public void MoveBy(Vector2 translation)
