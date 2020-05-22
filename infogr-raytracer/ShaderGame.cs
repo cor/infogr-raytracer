@@ -1,3 +1,5 @@
+using System;
+using System.Diagnostics;
 using OpenTK.Graphics.OpenGL;
 
 namespace infogr_raytracer
@@ -65,7 +67,18 @@ namespace infogr_raytracer
         public void OnRenderFrame()
         {
             GL.BindVertexArray(_vertexArrayObject);
+            
+            var stopwatch = new Stopwatch();
+            stopwatch.Start();
+            
             GL.DrawElements(PrimitiveType.Triangles, _indices.Length, DrawElementsType.UnsignedInt, 0);
+            
+            stopwatch.Stop();
+            
+            var fps = stopwatch.ElapsedMilliseconds == 0 ? 
+                "Infinite" :  
+                $"{1_000 / stopwatch.ElapsedMilliseconds}";
+            Console.WriteLine($"FPS: {fps}");
         }
 
         public void OnUnload()
