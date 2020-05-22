@@ -1,3 +1,4 @@
+using System;
 using OpenTK;
 
 namespace infogr_raytracer
@@ -7,15 +8,33 @@ namespace infogr_raytracer
         // Clockwise order, starting with top-left corner
         private Vector2[] Points;
 
-        public Rectangle(Vector2 position, float width, float height)
+        public Rectangle(Vector2 position, float width, float height, float angle = 0)
         {
+            // Determine x, y coordinates as if the rectangle were at the origin
             Points = new[]
             {
-                new Vector2(position.X - width * 0.5f, position.Y + height * 0.5f),
-                new Vector2(position.X + width * 0.5f, position.Y + height * 0.5f),
-                new Vector2(position.X + width * 0.5f, position.Y - height * 0.5f),
-                new Vector2(position.X - width * 0.5f, position.Y - height * 0.5f)
+                new Vector2(- width * 0.5f, + height * 0.5f),
+                new Vector2(+ width * 0.5f, + height * 0.5f),
+                new Vector2(+ width * 0.5f, - height * 0.5f),
+                new Vector2(- width * 0.5f, - height * 0.5f),                
+                // new Vector2(position.X - width * 0.5f, position.Y + height * 0.5f),
+                // new Vector2(position.X + width * 0.5f, position.Y + height * 0.5f),
+                // new Vector2(position.X + width * 0.5f, position.Y - height * 0.5f),
+                // new Vector2(position.X - width * 0.5f, position.Y - height * 0.5f)
             };
+
+            // Rotate the points based on angle
+            if (angle != 0)
+            {
+                for (int i = 0; i < Points.Length; i++)
+                    Points[i] = new Vector2(
+                        Points[i].X * (float) Math.Cos(angle) - Points[i].Y * (float) Math.Sin(angle),
+                        Points[i].X * (float) Math.Sin(angle) + Points[i].Y * (float) Math.Cos(angle));
+            }
+            
+            // Translate the points to their position
+            for (int i = 0; i < Points.Length; i++)
+                Points[i] += position;
         }
 
         public Vector2 Position
