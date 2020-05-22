@@ -81,16 +81,21 @@ namespace infogr_raytracer
         {
             Screen.Clear(255);
 
+            var timer = new System.Diagnostics.Stopwatch();
+            
+            timer.Start();
             Parallel.For(0, Screen.Width * Screen.Height, (i) =>
             {
                 var x = i % Screen.Width;
                 var y = i / Screen.Width;
                 Vector3 colorForPixel = Trace(_camera.WorldSpace(x, y));
                 Screen.Plot(x, y, ToScreenColor(colorForPixel));
-                
             });
-
+            timer.Stop();
+            
+            var fps = timer.ElapsedMilliseconds / 1000f;
             Screen.Print("Look on my Works, ye Mighty, and despair!", 10, 10, 0xFFFFFF);
+            Screen.Print($"FPS: {fps}", 10, 30, 0xFFFFFF);
         }
 
         /// <summary>
