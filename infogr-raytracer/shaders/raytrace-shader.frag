@@ -68,7 +68,9 @@ bool circle_collides(Circle circle, Ray ray)
 // Convert point from screen space to world space
 vec2 ToWorldSpace(vec2 screenSpacePoint)
 {
-    return screenSpacePoint + camera.position; 
+    float ratio = 100; // screen pixels per world space unit
+    
+    return ((screenSpacePoint + vec2(1, 1)) / 2) * vec2(SCREEN_WIDTH, SCREEN_HEIGHT) / ratio; 
 }
 
 
@@ -103,8 +105,8 @@ vec3 Trace(vec2 worldPoint)
 
 void main()
 {
-    camera.position = vec2 (0, time);
+    camera.position = vec2 (-5, time - 5);
     
-    vec3 colorAtPixel = Trace(ToWorldSpace(screenPosition));
+    vec3 colorAtPixel = Trace(ToWorldSpace(screenPosition) + camera.position);
     FragColor = vec4(colorAtPixel, 1);
 }

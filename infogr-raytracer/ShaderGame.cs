@@ -6,7 +6,6 @@ namespace infogr_raytracer
 {
     public class ShaderGame
     {
-        
         private readonly float[] _vertices =
         {
              1.0f,  1.0f, 0.0f,
@@ -80,12 +79,18 @@ namespace infogr_raytracer
             var fps = stopwatch.ElapsedMilliseconds == 0 ? 
                 "Infinite" :  
                 $"{1_000 / stopwatch.ElapsedMilliseconds}";
-            Console.WriteLine($"FPS: {fps}");
+            // Console.WriteLine($"FPS: {fps}");
         }
 
         public void OnUnload()
         {
             _shader.Dispose();
+        }
+
+        public void OnResize(int width, int height)
+        {
+            _shader.SetInt("SCREEN_WIDTH", width);
+            _shader.SetInt("SCREEN_HEIGHT", height);
         }
     }
 }

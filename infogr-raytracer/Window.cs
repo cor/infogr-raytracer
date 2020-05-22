@@ -91,6 +91,10 @@ namespace infogr_raytracer
             GL.Viewport(0, 0, Width, Height);
 
             // TODO: Implement for SHADER_VERSION
+            if (SHADER_VERSION)
+            {
+                _shaderGame.OnResize(Width, Height);
+            }
             if (!SHADER_VERSION)
             {
                 _game.Screen.Unload();
