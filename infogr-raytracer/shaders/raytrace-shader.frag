@@ -5,10 +5,22 @@ out vec4 FragColor;
 
 uniform float time;
 
+struct Ray {
+    vec2 origin;
+    vec2 direction;
+    float magnitude;
+};
+
 struct Light
 {
     vec2 position;
     vec3 color;
+};
+
+struct Circle
+{
+    vec2 position;
+    float radius;
 };
 
 uniform Light[2] lights = Light[2] (
@@ -16,8 +28,26 @@ uniform Light[2] lights = Light[2] (
     Light(vec2(0.5, 0.5), vec3(0.25, 1, 0.25))
 );
 
-//const vec2 lightPosition = vec2(0, 0);
-//const vec3 lightColor = vec3(2, 1, 1);
+uniform Circle[1] circles = Circle[1] (
+    Circle(vec2(-0.5, -0.5), 0.1)
+);
+
+bool circle_collides(Circle circle, Ray ray) 
+{
+    vec2 posToOrigin = ray.origin - circle.position;
+    float a = dot(ray.direction, ray.direction);
+    float b = dot(ray.direction, posToOrigin);
+    float c = dot(posToOrigin, posToOrigin) - (circle.radius * circle.radius);
+    float d = (b * b) - (a * c);
+    
+    if (d < 0){return false;}
+    
+    float sqrtD = sqrt(d);
+    float distance = (-b - sqrtD) / a;
+    if (distance < 0) {distance = (-b + sqrtD) / a;}
+    
+    return (distance > 0 && distance < ray.magnitude);
+}
 
 in vec2 screenPosition;
 
@@ -27,7 +57,14 @@ void main()
     
     for (int i = 0; i < lights.length(); i++)
     {
-        vec2 vector2Light = screenPosition.xy - lights[i].position + vec2(0, time);
+        vec2 vector2Light = lights[i].position + vec2(0, time) - screenPosition;
+        Ray ray = Ray(screenPosition, vector2Light, length(vector2Light));
+        
+        Circle circle = circles[0];
+        if (circle_collides(circle, ray)) {
+            continue;
+        }
+        
         float distanceToLight = length(vector2Light);
         float intensity = 1.0 / (4 * M_PI * distanceToLight * distanceToLight);
         
