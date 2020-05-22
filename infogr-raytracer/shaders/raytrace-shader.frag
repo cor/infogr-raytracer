@@ -1,7 +1,12 @@
 #version 330 core
+
+in vec2 screenPosition;
 out vec4 FragColor;
 
 #define M_PI 3.1415926535897932384626433832795
+
+uniform int SCREEN_WIDTH;
+uniform int SCREEN_HEIGHT;
 
 uniform float time;
 
@@ -23,8 +28,17 @@ struct Circle
     float radius;
 };
 
-uniform Light[2] lights = Light[2] (
-    Light(vec2(0, 0), vec3(2, 1, 1)),
+struct Camera
+{
+    vec2 position;
+    vec2 viewport;
+    int screenSizeWorldSizeRatio;
+} camera;
+
+
+uniform Light[3] lights = Light[3] (
+    Light(vec2(0, 0), vec3(1, 0.5, 0.5)),
+    Light(vec2(-1, 0), vec3(0.5, 0.5, 1)),
     Light(vec2(0.5, 0.5), vec3(0.25, 1, 0.25))
 );
 
@@ -49,17 +63,24 @@ bool circle_collides(Circle circle, Ray ray)
     return (distance > 0 && distance < ray.magnitude);
 }
 
-in vec2 screenPosition;
 
-void main()
+
+// Convert point from screen space to world space
+vec2 ToWorldSpace(vec2 screenSpacePoint)
+{
+    return screenSpacePoint + camera.position; 
+}
+
+
+vec3 Trace(vec2 worldPoint)
 {
     vec3 colorAtPixel = vec3(0, 0, 0);
-    
+
     for (int i = 0; i < lights.length(); i++)
     {
-        vec2 vector2Light = lights[i].position + vec2(0, time) - screenPosition;
-        Ray ray = Ray(screenPosition, vector2Light, length(vector2Light));
-        
+        vec2 vector2Light = lights[i].position - worldPoint;
+        Ray ray = Ray(worldPoint, vector2Light, length(vector2Light));
+
         bool occluded = false;
         for (int c = 0; c < circles.length(); c++) {
             Circle circle = circles[c];
@@ -69,13 +90,21 @@ void main()
             }
         }
         if (occluded) {continue;}
-        
-        
+
+
         float distanceToLight = length(vector2Light);
         float intensity = 1.0 / (4 * M_PI * distanceToLight * distanceToLight);
-        
+
         colorAtPixel += lights[i].color * intensity;
     }
     
+    return colorAtPixel;
+}
+
+void main()
+{
+    camera.position = vec2 (0, time);
+    
+    vec3 colorAtPixel = Trace(ToWorldSpace(screenPosition));
     FragColor = vec4(colorAtPixel, 1);
 }
