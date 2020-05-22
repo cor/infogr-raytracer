@@ -36,24 +36,36 @@ struct Camera
 } camera;
 
 
+//uniform Light[] lights = Light[] (
+//    Light(vec2(0, 0), 4 * normalize(vec3(0, 0.75, 0.75))),
+//    Light(vec2(4, 0), 4 * normalize(vec3(0, 1, 0))),
+//    Light(vec2(8, 0), 4 * normalize(vec3(0.75, 1, 0))),
+//    Light(vec2(0, 4), 4 * normalize(vec3(0, 0, 1))),
+//    Light(vec2(4, 4), 4 * normalize(vec3(1, 1, 1))),
+//    Light(vec2(8, 4), 4 * normalize(vec3(1, 1, 0))),
+//    Light(vec2(0, 8), 4 * normalize(vec3(1, 0, 1))),
+//    Light(vec2(4, 8), 4 * normalize(vec3(1, 0, 0))),
+//    Light(vec2(8, 8), 4 * normalize(vec3(1, 0.75, 0)))
+//);
+
 uniform Light[] lights = Light[] (
-    Light(vec2(0, 0), vec3(1, 1, 1)),
-    Light(vec2(4, 0), vec3(1, 1, 1)),
-    Light(vec2(8, 0), vec3(1, 1, 1)),
-    Light(vec2(0, 4), vec3(1, 1, 1)),
-    Light(vec2(4, 4), vec3(1, 1, 1)),
-    Light(vec2(8, 4), vec3(1, 1, 1)),
-    Light(vec2(0, 8), vec3(1, 1, 1)),
-    Light(vec2(4, 8), vec3(1, 1, 1)),
-    Light(vec2(8, 8), vec3(1, 1, 1))
+    Light(vec2(0, 0), 4 * vec3(0, 0.75, 0.75)),
+    Light(vec2(4, 0), 4 * vec3(0, 1, 0)),
+    Light(vec2(8, 0), 4 * vec3(0.75, 1, 0)),
+    Light(vec2(0, 4), 4 * vec3(0, 0, 1)),
+    Light(vec2(4, 4), 4 * vec3(1, 1, 1)),
+    Light(vec2(8, 4), 4 * vec3(1, 1, 0)),
+    Light(vec2(0, 8), 4 * vec3(1, 0, 1)),
+    Light(vec2(4, 8), 4 * vec3(1, 0, 0)),
+    Light(vec2(8, 8), 4 * vec3(1, 0.75, 0))
 );
 
-uniform Circle[] circles = Circle[] (
-    Circle(vec2(1, 2), 0.1),
-    Circle(vec2(2, 2), 0.2),
-    Circle(vec2(3, 2), 0.3),
-    Circle(vec2(4, 2), 0.2),
-    Circle(vec2(5, 2), 0.1)
+Circle[] circles = Circle[] (
+    Circle(vec2(2, 2), 0.1),
+    Circle(vec2(3, 2), 0.2),
+    Circle(vec2(4, 2), 0.3),
+    Circle(vec2(5, 2), 0.2),
+    Circle(vec2(6, 2), 0.1)
 );
 
 bool circle_collides(Circle circle, Ray ray) 
@@ -118,7 +130,13 @@ vec3 Trace(vec2 worldPoint)
 
 void main()
 {
-    camera.position = vec2 (4, 4);
+    
+    for (int i = 0; i < circles.length(); i++)
+    {
+        circles[i].position += vec2(time, 0);
+    }
+    
+    camera.position = vec2 (4, 4 + time);
     vec3 colorAtPixel = Trace(ToWorldSpace(screenPosition) + camera.position);
     FragColor = vec4(colorAtPixel, 1);
 }
