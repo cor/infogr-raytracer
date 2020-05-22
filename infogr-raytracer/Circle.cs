@@ -5,7 +5,7 @@ namespace infogr_raytracer
 {
     public struct Circle: IGameObject
     {
-        public Vector2 Position;
+        public Vector2 Position { get; set; }
         public float Radius;
         
         /// <summary>
@@ -15,6 +15,15 @@ namespace infogr_raytracer
         public void Move(Vector2 position)
         {
             Position = position;
+        }
+        
+        /// <summary>
+        /// Translate a circle.
+        /// </summary>
+        /// <param name="translation">The translation by which the circle's position should be altered</param>
+        public void MoveBy(Vector2 translation)
+        {
+            Move(translation + Position);
         }
 
         /// <summary>

@@ -20,7 +20,7 @@ namespace infogr_raytracer
             {
                 // Get pixels from the loaded bitmap
                 var data = image.LockBits(
-                    new Rectangle(0, 0, image.Width, image.Height),
+                    new System.Drawing.Rectangle(0, 0, image.Width, image.Height),
                     ImageLockMode.ReadOnly,
                     System.Drawing.Imaging.PixelFormat.Format32bppArgb);
                 

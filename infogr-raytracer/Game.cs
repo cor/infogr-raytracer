@@ -34,14 +34,15 @@ namespace infogr_raytracer
             Lights = new List<Light>()
             {
                 new Light() { Position = new Vector2(4.0f, 2.0f), Color =  3 * new Vector3(6, 2, 1) },
-                new Light() { Position = new Vector2(6.0f, 3.0f), Color =  0.5f * new Vector3(1, 2, 3) },
+                new Light() { Position = new Vector2(6.0f, 4.0f), Color =  0.5f * new Vector3(1, 2, 3) },
+                new Light() { Position = new Vector2(4.5f, 5.0f), Color =  2f * new Vector3(1, 2, 3) },
             },
             GameObjects = new List<IGameObject>()
             {
                 new Circle() { Position = new Vector2(4.0f, 0.9999f), Radius = 1.0f },
-                new Circle() { Position = new Vector2(4.0f, 3.9999f), Radius = 0.1f },
-                new Circle() { Position = new Vector2(4.5f, 3.5f), Radius = 0.1f },
-                new Circle() { Position = new Vector2(3.5f, 3.5f), Radius = 0.1f }
+                new Circle() { Position = new Vector2(4.0f, 3.65f), Radius = 0.1f },
+                new Circle() { Position = new Vector2(3.5f, 3.5f), Radius = 0.2f },
+                new Rectangle(new Vector2(4.5f, 3.9f), 0.4f, 0.8f, angle: 0.7f)
             }
         };
         
@@ -67,6 +68,8 @@ namespace infogr_raytracer
         {
             MoveCamera();
             RenderScene();
+            
+            _scene.GameObjects[3].MoveBy(new Vector2(-0.1f, 0));
         }
 
         /// <summary>
