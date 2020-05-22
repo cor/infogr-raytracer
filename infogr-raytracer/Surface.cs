@@ -100,7 +100,7 @@ namespace infogr_raytracer
 			Width = bmp.Width;
 			Height = bmp.Height;
 			Pixels = new int[Width * Height];
-			BitmapData data = bmp.LockBits( new Rectangle( 0, 0, Width, Height ), ImageLockMode.ReadOnly, System.Drawing.Imaging.PixelFormat.Format32bppArgb );
+			BitmapData data = bmp.LockBits( new System.Drawing.Rectangle( 0, 0, Width, Height ), ImageLockMode.ReadOnly, System.Drawing.Imaging.PixelFormat.Format32bppArgb );
 			IntPtr ptr = data.Scan0;
 			System.Runtime.InteropServices.Marshal.Copy( data.Scan0, Pixels, 0, Width * Height );
 			bmp.UnlockBits( data );

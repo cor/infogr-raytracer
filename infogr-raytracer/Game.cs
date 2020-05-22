@@ -39,7 +39,7 @@ namespace infogr_raytracer
             GameObjects = new List<IGameObject>()
             {
                 new Circle() { Position = new Vector2(4.0f, 0.9999f), Radius = 1.0f },
-                new Circle() { Position = new Vector2(4.0f, 3.9999f), Radius = 0.1f },
+                new Circle() { Position = new Vector2(4.0f, 3.65f), Radius = 0.1f },
                 new Circle() { Position = new Vector2(4.5f, 3.5f), Radius = 0.1f },
                 new Circle() { Position = new Vector2(3.5f, 3.5f), Radius = 0.1f }
             }
