@@ -54,7 +54,7 @@ namespace infogr_raytracer
             _shader = new Shader("shaders/raytrace-shader.vert", "shaders/raytrace-shader.frag");
             _shader.Use();
             
-            int vertexLocation = _shader.GetAttribLocation("aPosition");
+            int vertexLocation = _shader.GetAttribLocation("vertexPosition");
             GL.EnableVertexAttribArray(vertexLocation);
             GL.VertexAttribPointer(vertexLocation, 3, VertexAttribPointerType.Float, false, 3 * sizeof(float), 0);
         }
