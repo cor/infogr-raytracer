@@ -60,10 +60,16 @@ void main()
         vec2 vector2Light = lights[i].position + vec2(0, time) - screenPosition;
         Ray ray = Ray(screenPosition, vector2Light, length(vector2Light));
         
-        Circle circle = circles[0];
-        if (circle_collides(circle, ray)) {
-            continue;
+        bool occluded = false;
+        for (int c = 0; c < circles.length(); c++) {
+            Circle circle = circles[c];
+            if (circle_collides(circle, ray)) {
+                occluded = true;
+                break;
+            }
         }
+        if (occluded) {continue;}
+        
         
         float distanceToLight = length(vector2Light);
         float intensity = 1.0 / (4 * M_PI * distanceToLight * distanceToLight);
