@@ -56,6 +56,30 @@ namespace Tests
                     Height = 4.2f,
                     Angle = 0,
                     Description = "Rectangle at (2.042, 3.036) of size 3.2, 4.2"
+                },
+                new RectanglePositionTestCase()
+                {
+                    Position = new Vector2(5.43421f, -4.321f),
+                    Width = 3.21f,
+                    Height = 4.21f,
+                    Angle = 0,
+                    Description = "Rectangle at (5.43421, -4.321) of size 3.21, 4.321"
+                },
+                new RectanglePositionTestCase()
+                {
+                    Position = new Vector2(5.43421f, -4.321f),
+                    Width = -5.21f,
+                    Height = 4.21f,
+                    Angle = 0,
+                    Description = "Rectangle with negative Width"
+                },
+                new RectanglePositionTestCase()
+                {
+                    Position = new Vector2(5.43421f, -4.321f),
+                    Width = 5.21f,
+                    Height = -7.21f,
+                    Angle = 0,
+                    Description = "Rectangle with negative Height"
                 }
             };
         
@@ -64,8 +88,8 @@ namespace Tests
         public void CalculatesPosition(RectanglePositionTestCase testCase)
         {
             Rectangle rectangle = new Rectangle(testCase.Position, testCase.Width, testCase.Height);
-            Assert.That(testCase.Position.X, Is.EqualTo(rectangle.Position.X).Within(0.01f));
-            Assert.That(testCase.Position.Y, Is.EqualTo(rectangle.Position.Y).Within(0.01f));
+            Assert.That(testCase.Position.X, Is.EqualTo(rectangle.Position.X).Within(0.001f));
+            Assert.That(testCase.Position.Y, Is.EqualTo(rectangle.Position.Y).Within(0.001f));
         }
     }
 }
